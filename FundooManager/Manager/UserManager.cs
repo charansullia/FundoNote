@@ -20,7 +20,7 @@ namespace FundooManager.Manager
         {
             try
             {
-               // user.Password = EncodePasswordToBase64(user.Password);
+                user.Password = EncodePasswordToBase64(user.Password);
                 return this.repository.Register(user);
             }
             catch (Exception ex)
@@ -28,20 +28,20 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        //public static string EncodePasswordToBase64(string Password)
-        //{
-        //    try
-        //    {
-        //        byte[] encData_byte = new byte[Password.Length];
-        //        encData_byte = System.Text.Encoding.UTF8.GetBytes(Password);
-        //        string encodedData = Convert.ToBase64String(encData_byte);
-        //        return encodedData;
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        throw new Exception("error in Base64Encode" + ex.Message);
-        //    }
-        //}
+        public static string EncodePasswordToBase64(string Password)
+        {
+            try
+            {
+                byte[] encData_byte = new byte[Password.Length];
+                encData_byte = System.Text.Encoding.UTF8.GetBytes(Password);
+                string encodedData = Convert.ToBase64String(encData_byte);
+                return encodedData;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("error in Base64Encode" + ex.Message);
+            }
+        }
         public string Login(LoginModel loginDetails)
         {
             try
