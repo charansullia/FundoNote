@@ -9,6 +9,7 @@ namespace FundooManager.Interface
     {
         string Register(RegisterModel user);
         string Login(LoginModel loginDetail);
-        //string Encrypt
+        string Reset(ResetModel reset);
+        
     }
 }

@@ -6,6 +6,7 @@ namespace FundooModel
 {
    public class LoginModel
     {
+       // public int UserId { get; set; }
         //[Required]
         //[RegularExpression("^[a-zA-Z0-9]+([.#_$+-][a-zA-Z0-9]+)*[@][a-zA-Z0-9]+[.][a-zA-Z]{2,3}([.][a-zA-Z]{2})?$", ErrorMessage = "Email is not valid. Please Enter valid email")]
         public string Email { get; set; }

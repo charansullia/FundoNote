@@ -59,28 +59,27 @@ namespace FundooNotes.Contollers
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
-        //[HttpPost]
-        //[Route("api/Encrypt")]
-        //public IActionResult Encrypt([FromBody] EncryptModel encryptDetails)
-        //{
-        //    try
-        //    {
-        //        string message = this.manager.Encrypt(encryptDetails);
-        //        if (message.Equals("Encrypted"))
-        //        {
-        //            return this.Ok(new { status = true, Message = message });
-        //        }
-        //        else
-        //        {
-        //            return this.BadRequest(new { status = false, Message = message });
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return this.NotFound(new { status = false, ex.Message });
-        //    }
-        //}
-
+        [HttpPost]
+        [Route("api/Reset")]
+        public IActionResult Reset([FromBody] ResetModel reset)
+        {
+            try
+            {
+                string message = this.manager.Reset(reset);
+                if (message.Equals("Password Reset Successful"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
 
     }
 }
