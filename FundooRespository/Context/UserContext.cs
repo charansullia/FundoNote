@@ -13,7 +13,5 @@ namespace FundooRespository.Context
 
         }
         public DbSet<RegisterModel> Users { get; set; }
-       // public DbSet<LoginModel> loginDetails { get; set; }
-        //public DbSet<ResetModel> reset { get; set; }
     }
 }

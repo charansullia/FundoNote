@@ -59,7 +59,7 @@ namespace FundooNotes.Contollers
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPut]
         [Route("api/Reset")]
         public IActionResult Reset([FromBody] ResetModel reset)
         {
