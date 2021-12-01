@@ -19,7 +19,7 @@ namespace FundooNotes.Contollers
 
         [HttpPost]
         [Route("api/register")]
-        public IActionResult Register([FromBody] RegisterModel user)
+        public async Task<IActionResult> Register([FromBody] RegisterModel user)
         {
             try
             {
@@ -47,7 +47,8 @@ namespace FundooNotes.Contollers
                 string message = this.manager.Login(loginDetails);
                 if (message.Equals("Login Successful"))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    string tokenString = this.manager.GenerateToken(loginDetails.Email);
+                    return this.Ok(new { Status = true, Message = message, Data = loginDetails.Email, Token = tokenString });
                 }
                 else
                 {
@@ -74,6 +75,30 @@ namespace FundooNotes.Contollers
                 {
                     return this.BadRequest(new { Status = false, Message = message });
                 }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
+        [HttpPost]
+        [Route("api/forget")]
+        public IActionResult Forget(string Email)
+
+        {
+            try
+            {
+                string message = this.manager.Forget(Email);
+                if (message.Equals("Reset Link send to Your Email"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+
             }
             catch (Exception ex)
             {

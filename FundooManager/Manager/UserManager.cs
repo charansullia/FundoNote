@@ -66,6 +66,29 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public string Forget(String forget)
+        {
+            try
+            {
+                return this.repository.Forget(forget);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string GenerateToken(string Email)
+        {
+            try
+            {
+                return this.repository.GenerateToken(Email);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 
 }

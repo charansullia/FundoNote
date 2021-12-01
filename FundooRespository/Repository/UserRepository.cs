@@ -1,9 +1,15 @@
-﻿using FundooModel;
+﻿using Experimental.System.Messaging;
+using FundooModel;
 using FundooRespository.Context;
 using FundooRespository.Interface;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Mail;
+using System.Security.Claims;
 using System.Text;
 
 namespace FundooRespository.Repository
@@ -11,9 +17,11 @@ namespace FundooRespository.Repository
     public class UserRepository : IUserRepository
     {
         private readonly UserContext context;
-        public UserRepository(UserContext context)
+        private readonly IConfiguration configuration;
+        public UserRepository(UserContext context,IConfiguration configuration)
         {
             this.context = context;
+            this.configuration = configuration;
         }
         public string Register(RegisterModel user)
         {
@@ -86,6 +94,76 @@ namespace FundooRespository.Repository
                 throw new Exception("error in Base64Encode" + ex.Message);
             }
         }
+        public string GenerateToken(string Email)
+        {
+            byte[] key = Convert.FromBase64String(this.configuration["Credentials:Secret"]);
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
+            SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] {
+                      new Claim(ClaimTypes.Name, Email)}),
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(securityKey,
+                SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
+            return handler.WriteToken(token);
+        }
+        public string Forget(string Email)
+        {
+            try
+            {
+                var ifEmailExist = this.context.Users.Where(x => x.Email ==Email).SingleOrDefault();
+                if (ifEmailExist != null)
+                {
+                    MailMessage mail = new MailMessage();
+                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                    mail.From = new MailAddress(this.configuration["Credentials:Email"]);
+                    mail.To.Add(Email);
+                    SendMSMQ();
+                    mail.Body = RecieveMSMQ();
+
+                    SmtpServer.Port = 587;
+                    SmtpServer.Credentials = new System.Net.NetworkCredential(this.configuration["Credentials:Email"], this.configuration["Credentials:Password"]);
+                    SmtpServer.EnableSsl = true;
+                    SmtpServer.Send(mail);
+
+
+                    return "Reset Link send to Your Email";
+                }
+                return "Email does not exist";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public void SendMSMQ()
+        {
+            MessageQueue msgqueue;
+            if (MessageQueue.Exists(@".\Private$\Fundoo"))
+            {
+                msgqueue = new MessageQueue(@".\Private$\Fundoo");
+            }
+            else
+            {
+                msgqueue = MessageQueue.Create(@".\Private$\Fundoo");
+            }
+            string body = "This is Password reset link.";
+            msgqueue.Label = "Mail Body";
+            msgqueue.Send(body);
+        }
+        public string RecieveMSMQ()
+        {
+            MessageQueue messagequeue = new MessageQueue(@".\Private$\Fundo");
+            var recievemsg = messagequeue.Receive();
+           // recievemsg
+            return recievemsg.ToString();
+        }
+
     }
 }
     
