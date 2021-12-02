@@ -15,5 +15,6 @@ namespace FundooRespository.Interface
         string UpdatePin(NoteModel note);
         string UpdateArchive(NoteModel note);
         string UpdateTrash(NoteModel note);
+        string DeleteForever(NoteModel note);
     }
 }

@@ -164,5 +164,29 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public string DeleteForever(NoteModel note)
+        {
+            try
+            {
+                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (noteExist != null)
+                {
+                    if (noteExist.Trash == true)
+                    {
+                        this.context.Note.Remove(noteExist);
+                        this.context.SaveChanges();
+                        return "Note Deleted Successfully";
+                    }
+                }
+                return "Note not Deleted";
+            }
+
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+
     }
 }
