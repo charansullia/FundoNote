@@ -126,6 +126,43 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
-
+        public string UpdateArchive(NoteModel note)
+        {
+            try
+            {
+                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Archive = note.Archive;
+                    this.context.Note.Update(noteExist);
+                    this.context.SaveChanges();
+                    return "Archive Updated Successfully";
+                }
+                return "Archive Not Updated";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string UpdateTrash(NoteModel note)
+        {
+            try
+            {
+                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Trash = note.Trash;
+                    this.context.Note.Update(noteExist);
+                    this.context.SaveChanges();
+                    return "Note Trashed Successfully";
+                }
+                return "Note Not Trashed";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

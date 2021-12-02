@@ -82,5 +82,27 @@ namespace FundooManager.Manager
             }
         }
 
+        public string UpdateArchive(NoteModel note)
+        {
+            try
+            {
+                return this.noteRepository.UpdateArchive(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string UpdateTrash(NoteModel note)
+        {
+            try
+            {
+                return this.noteRepository.UpdateTrash(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
