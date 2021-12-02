@@ -8,5 +8,6 @@ namespace FundooManager.Interface
   public interface INoteManager
     {
         string AddNote(NoteModel note);
+        string Update(NoteModel note);
     }
 }

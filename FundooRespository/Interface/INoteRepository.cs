@@ -8,5 +8,6 @@ namespace FundooRespository.Interface
    public interface INoteRepository
     {
         string AddNote(NoteModel note);
+        string Update(NoteModel note);
     }
 }

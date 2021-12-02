@@ -26,6 +26,17 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public string Update(NoteModel note)
+        {
+            try
+            {
+                return this.noteRepository.Update(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

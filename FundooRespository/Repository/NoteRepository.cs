@@ -3,6 +3,7 @@ using FundooRespository.Context;
 using FundooRespository.Interface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FundooRespository.Repository
@@ -23,6 +24,26 @@ namespace FundooRespository.Repository
                 this.context.Note.Add(note);
                 this.context.SaveChanges();
                 return "Note Added Successfully";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string Update(NoteModel note)
+
+        {
+            try
+            {
+                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).FirstOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Title = note.Title;
+                    this.context.Note.Update(noteExist);
+                    this.context.SaveChanges();
+                    return "Title Updated Successfully";
+                }
+                return "Title Not Updated";
             }
             catch (ArgumentNullException ex)
             {
