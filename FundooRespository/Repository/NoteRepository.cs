@@ -69,6 +69,25 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public string UpdateReminder(NoteModel note)
+        {
+            try
+            {
+                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Reminder = note.Reminder;
+                    this.context.Note.Update(noteExist);
+                    this.context.SaveChanges();
+                    return "Reminder Updated Successfully";
+                }
+                return "Reminder Not Updated";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

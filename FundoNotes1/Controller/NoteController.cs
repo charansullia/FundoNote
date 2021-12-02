@@ -78,6 +78,26 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
-
+        [HttpPut]
+        [Route("api/UpdateReminder")]
+        public IActionResult EditReminder([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = this.manager.UpdateReminder(note);
+                if (message.Equals("Reminder Updated Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
     }
 }
