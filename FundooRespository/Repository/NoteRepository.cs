@@ -107,6 +107,25 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public string UpdatePin(NoteModel note)
+        {
+            try
+            {
+                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Pin = note.Pin;
+                    this.context.Note.Update(noteExist);
+                    this.context.SaveChanges();
+                    return "Pin Updated Successfully";
+                }
+                return "Pin Not Updated";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

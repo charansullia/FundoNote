@@ -70,6 +70,17 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public string UpdatePin(NoteModel note)
+        {
+            try
+            {
+                return this.noteRepository.UpdatePin(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

@@ -12,5 +12,6 @@ namespace FundooRespository.Interface
         string UpdateDescription(NoteModel note);
         string UpdateReminder(NoteModel note);
         string UpdateColour(NoteModel note);
+        string UpdatePin(NoteModel note);
     }
 }

@@ -120,6 +120,28 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
+        [HttpPut]
+        [Route("api/UpdatePin")]
+        public IActionResult EditPin([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = this.manager.UpdatePin(note);
+                if (message.Equals("Pin Updated Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
+
 
     }
 }
