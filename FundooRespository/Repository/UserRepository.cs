@@ -47,6 +47,7 @@ namespace FundooRespository.Repository
        
         public string Login(LoginModel loginDetails)
         {
+            loginDetails.Password = EncodePasswordToBase64(loginDetails.Password);
             try
             {
                 var ifEmailExist = this.context.Users.Where(x => x.Email == loginDetails.Email && x.Password == loginDetails.Password).SingleOrDefault();
@@ -54,7 +55,7 @@ namespace FundooRespository.Repository
                 {
                     return "Login Successful";
                 }
-                    return "Email not exist";
+                    return "Incorrect Password";
             }
             catch (ArgumentNullException ex)
             {
@@ -96,7 +97,7 @@ namespace FundooRespository.Repository
         }
         public string GenerateToken(string Email)
         {
-            byte[] key = Convert.FromBase64String(this.configuration["Credentials:Secret"]);
+            byte[] key = Encoding.UTF8.GetBytes(this.configuration["Credentials:Secret"]);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
@@ -152,7 +153,8 @@ namespace FundooRespository.Repository
             {
                 msgqueue = MessageQueue.Create(@".\Private$\Fundoo");
             }
-            string body = "This is Password reset link.";
+            msgqueue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
+            string body = "This is Password reset link.ResetLink=>";
             msgqueue.Label = "Mail Body";
             msgqueue.Send(body);
         }
@@ -160,7 +162,7 @@ namespace FundooRespository.Repository
         {
             MessageQueue messagequeue = new MessageQueue(@".\Private$\Fundo");
             var recievemsg = messagequeue.Receive();
-           // recievemsg
+            recievemsg.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
             return recievemsg.ToString();
         }
 

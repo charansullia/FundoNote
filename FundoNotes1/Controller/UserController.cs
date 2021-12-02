@@ -19,14 +19,14 @@ namespace FundooNotes.Contollers
 
         [HttpPost]
         [Route("api/register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel user)
+        public IActionResult Register([FromBody] RegisterModel user)
         {
             try
             {
                 string message = this.manager.Register(user);
                 if (message.Equals("Register Successfull"))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return  this.Ok(new { Status = true, Message = message });
                 }
                 else
                 {
