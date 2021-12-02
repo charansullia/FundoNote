@@ -11,5 +11,6 @@ namespace FundooManager.Interface
         string Update(NoteModel note);
         string UpdateDescription(NoteModel note);
         string UpdateReminder(NoteModel note);
+        string UpdateColour(NoteModel note);
     }
 }
