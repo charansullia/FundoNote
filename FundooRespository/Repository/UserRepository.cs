@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooRespository.Repository
 {
@@ -97,7 +98,7 @@ namespace FundooRespository.Repository
         }
         public string GenerateToken(string Email)
         {
-            byte[] key = Encoding.UTF8.GetBytes(this.configuration["Credentials:Secret"]);
+            byte[] key = Encoding.UTF8.GetBytes(this.configuration["Secret"]);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
@@ -126,7 +127,6 @@ namespace FundooRespository.Repository
                     mail.To.Add(Email);
                     SendMSMQ();
                     mail.Body = RecieveMSMQ();
-
                     SmtpServer.Port = 587;
                     SmtpServer.Credentials = new System.Net.NetworkCredential(this.configuration["Credentials:Email"], this.configuration["Credentials:Password"]);
                     SmtpServer.EnableSsl = true;
@@ -160,10 +160,10 @@ namespace FundooRespository.Repository
         }
         public string RecieveMSMQ()
         {
-            MessageQueue messagequeue = new MessageQueue(@".\Private$\Fundo");
-            var recievemsg = messagequeue.Receive();
+            MessageQueue Messagequeue = new MessageQueue(@".\Private$\Fundoo");
+            var recievemsg = Messagequeue.Receive();
             recievemsg.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
-            return recievemsg.ToString();
+            return recievemsg.Body.ToString();
         }
 
     }

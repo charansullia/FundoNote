@@ -48,11 +48,22 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public string UpdateReminder(NoteModel note)
+        public string AddReminder(NoteModel note)
         {
             try
             {
-                return this.noteRepository.UpdateReminder(note);
+                return this.noteRepository.AddReminder(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string RemoveReminder(NoteModel note)
+        {
+            try
+            {
+                return this.noteRepository.RemoveReminder(note);
             }
             catch (Exception ex)
             {
@@ -70,11 +81,22 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public string UpdatePin(NoteModel note)
+        public string PinNote(NoteModel note)
         {
             try
             {
-                return this.noteRepository.UpdatePin(note);
+                return this.noteRepository.PinNote(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string UnPinNote(NoteModel note)
+        {
+            try
+            {
+                return this.noteRepository.UnPinNote(note);
             }
             catch (Exception ex)
             {
@@ -82,22 +104,44 @@ namespace FundooManager.Manager
             }
         }
 
-        public string UpdateArchive(NoteModel note)
+        public string Archive(NoteModel note)
         {
             try
             {
-                return this.noteRepository.UpdateArchive(note);
+                return this.noteRepository.Archive(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string UpdateTrash(NoteModel note)
+        public string UnArchive(NoteModel note)
         {
             try
             {
-                return this.noteRepository.UpdateTrash(note);
+                return this.noteRepository.UnArchive(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string Trash(NoteModel note)
+        {
+            try
+            {
+                return this.noteRepository.Trash(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string Restore(NoteModel note)
+        {
+            try
+            {
+                return this.noteRepository.Restore(note);
             }
             catch (Exception ex)
             {

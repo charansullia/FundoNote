@@ -1,5 +1,6 @@
 ﻿using FundooManager.Interface;
 using FundooModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace FundoNotes.Controller
 {
+   [Authorize]
     public class NoteController : ControllerBase
     {
         private readonly INoteManager manager;
@@ -38,7 +40,7 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/UpdateTitle")]
-        public IActionResult EditTitle([FromBody] NoteModel note)
+        public IActionResult UpdateTitle([FromBody] NoteModel note)
         {
             try
             {
@@ -59,7 +61,7 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/UpdateDescription")]
-        public IActionResult EditDescription([FromBody] NoteModel note)
+        public IActionResult UpdateDescription([FromBody] NoteModel note)
         {
             try
             {
@@ -79,13 +81,13 @@ namespace FundoNotes.Controller
             }
         }
         [HttpPut]
-        [Route("api/UpdateReminder")]
-        public IActionResult EditReminder([FromBody] NoteModel note)
+        [Route("api/AddReminder")]
+        public IActionResult AddReminder([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.UpdateReminder(note);
-                if (message.Equals("Reminder Updated Successfully"))
+                string message = this.manager.AddReminder(note);
+                if (message.Equals("Reminder Added Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -100,8 +102,30 @@ namespace FundoNotes.Controller
             }
         }
         [HttpPut]
+        [Route("api/RemoveReminder")]
+        public IActionResult RemoveReminder([FromBody] NoteModel noteModel)
+        {
+            try
+            {
+                string message = this.manager.RemoveReminder(noteModel);
+                if (message.Equals("Reminder Removed Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
+
+        [HttpPut]
         [Route("api/UpdateColour")]
-        public IActionResult EditColour([FromBody] NoteModel note)
+        public IActionResult UpdateColour([FromBody] NoteModel note)
         {
             try
             {
@@ -121,13 +145,13 @@ namespace FundoNotes.Controller
             }
         }
         [HttpPut]
-        [Route("api/UpdatePin")]
-        public IActionResult EditPin([FromBody] NoteModel note)
+        [Route("api/PinNote")]
+        public IActionResult PinNote([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.UpdatePin(note);
-                if (message.Equals("Pin Updated Successfully"))
+                string message = this.manager.PinNote(note);
+                if (message.Equals("Note Pinned Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -142,13 +166,13 @@ namespace FundoNotes.Controller
             }
         }
         [HttpPut]
-        [Route("api/UpdateArchive")]
-        public IActionResult EditArchive([FromBody] NoteModel note)
+        [Route("api/UnPinNote")]
+        public IActionResult UnPinNote([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.UpdateArchive(note);
-                if (message.Equals("Archive Updated Successfully"))
+                string message = this.manager.UnPinNote(note);
+                if (message.Equals("Note UnPinned Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -164,12 +188,56 @@ namespace FundoNotes.Controller
         }
 
         [HttpPut]
-        [Route("api/UpdateTrash")]
-        public IActionResult EditTrash([FromBody] NoteModel note)
+        [Route("api/Archive")]
+        public IActionResult UpdateArchive([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.UpdateTrash(note);
+                string message = this.manager.Archive(note);
+                if (message.Equals("Note Archived"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
+        [HttpPut]
+        [Route("api/UnArchive")]
+        public IActionResult UnArchive([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = this.manager.UnArchive(note);
+                if (message.Equals("Un Archived"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
+
+
+        [HttpPut]
+        [Route("api/Trash")]
+        public IActionResult UpdateTrash([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = this.manager.Trash(note);
                 if (message.Equals("Note Trashed Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -184,7 +252,28 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPut]
+        [Route("api/Restore")]
+        public IActionResult Restore([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = this.manager.Restore(note);
+                if (message.Equals("Note Restored Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
+        [HttpDelete]
         [Route("api/DeleteForever")]
         public IActionResult Delete([FromBody] NoteModel note)
         {

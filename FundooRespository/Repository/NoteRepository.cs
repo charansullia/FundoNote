@@ -69,7 +69,7 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string UpdateReminder(NoteModel note)
+        public string AddReminder(NoteModel note)
         {
             try
             {
@@ -79,14 +79,34 @@ namespace FundooRespository.Repository
                     noteExist.Reminder = note.Reminder;
                     this.context.Note.Update(noteExist);
                     this.context.SaveChanges();
-                    return "Reminder Updated Successfully";
+                    return "Reminder Added Successfully";
                 }
-                return "Reminder Not Updated";
+                return "Reminder Not Added";
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
+        }
+        public string RemoveReminder(NoteModel note)
+        {
+            try
+            {
+                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).FirstOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Reminder = null;
+                    this.context.Note.Update(noteExist);
+                    this.context.SaveChanges();
+                    return "Reminder Removed Successfully";
+                }
+                return "Reminder Not Added";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
         public string UpdateColour(NoteModel note)
         {
@@ -107,57 +127,132 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string UpdatePin(NoteModel note)
+        public string PinNote(NoteModel note)
         {
             try
             {
                 var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (noteExist != null)
                 {
-                    noteExist.Pin = note.Pin;
-                    this.context.Note.Update(noteExist);
-                    this.context.SaveChanges();
-                    return "Pin Updated Successfully";
+                    if (noteExist.Pin == true)
+                    {
+                        noteExist.Pin = note.Pin;
+                        this.context.Note.Update(noteExist);
+                        this.context.SaveChanges();
+                        return "Note Pinned Successfully";
+                    }
                 }
-                return "Pin Not Updated";
+                return "Pin Not Added";
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string UpdateArchive(NoteModel note)
+        public string UnPinNote(NoteModel note)
         {
             try
             {
                 var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (noteExist != null)
                 {
-                    noteExist.Archive = note.Archive;
-                    this.context.Note.Update(noteExist);
-                    this.context.SaveChanges();
-                    return "Archive Updated Successfully";
+                    if (noteExist.Pin != false)
+                    {
+                        noteExist.Pin = note.Pin;
+                        this.context.Note.Update(noteExist);
+                        this.context.SaveChanges();
+                        return "Note UnPinned Successfully";
+                    }  
                 }
-                return "Archive Not Updated";
+                return "Pin Not Removed";
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string UpdateTrash(NoteModel note)
+        public string Archive(NoteModel note)
         {
             try
             {
                 var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (noteExist != null)
                 {
-                    noteExist.Trash = note.Trash;
-                    this.context.Note.Update(noteExist);
-                    this.context.SaveChanges();
-                    return "Note Trashed Successfully";
+                    if (note.Archive == false)
+                    {
+                        noteExist.Archive = note.Archive;
+                        this.context.Note.Update(noteExist);
+                        this.context.SaveChanges();
+                        return "Note Archived";
+                    }
+                }
+                return "Not Added to Archive";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string UnArchive(NoteModel note)
+        {
+            try
+            {
+                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (noteExist != null)
+                {
+                    if (note.Archive != false)
+                    {
+                        noteExist.Archive = note.Archive;
+                        this.context.Note.Update(noteExist);
+                        this.context.SaveChanges();
+                        return "Un Archived";
+                    }
+                }
+                return "Not Removed from Archive";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string Trash(NoteModel note)
+        {
+            try
+            {
+                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (noteExist != null)
+                {
+                    if (note.Archive == false)
+                    {
+                        noteExist.Trash = note.Trash;
+                        this.context.Note.Update(noteExist);
+                        this.context.SaveChanges();
+                        return "Note Trashed Successfully";
+                    }
                 }
                 return "Note Not Trashed";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string Restore(NoteModel note)
+        {
+            try
+            {
+                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (noteExist != null)
+                {
+                    if (note.Archive != false)
+                    {
+                        noteExist.Trash = note.Trash;
+                        this.context.Note.Update(noteExist);
+                        this.context.SaveChanges();
+                        return "Note Restored Successfully";
+                    }
+                }
+                return "Note Not Restored";
             }
             catch (ArgumentNullException ex)
             {

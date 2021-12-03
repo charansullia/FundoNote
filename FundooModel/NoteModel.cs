@@ -21,13 +21,13 @@ namespace FundooModel
 
         public string Image { get; set; }
 
-        [DefaultValue(false)]
+      //  [DefaultValue(false)]
         public bool Pin { get; set; }
 
-        [DefaultValue(false)]
+        //[DefaultValue(false)]
         public bool Archive { get; set; }
 
-        [DefaultValue(false)]
+       // [DefaultValue(false)]
         public bool Trash { get; set; }
     }
 }
