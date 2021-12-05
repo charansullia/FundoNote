@@ -19,6 +19,7 @@ namespace FundooRespository.Interface
         string UnArchive(NoteModel note);
         string Trash(NoteModel note);
         string Restore(NoteModel note);
+       // string ImageUpload()
         string DeleteForever(NoteModel note);
     }
 }
