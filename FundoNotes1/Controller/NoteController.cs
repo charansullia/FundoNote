@@ -1,6 +1,7 @@
 ﻿using FundooManager.Interface;
 using FundooModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -273,6 +274,28 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
+        [HttpPut]
+        [Route("api/UploadImage")]
+        public IActionResult UploadImage(int noteId, IFormFile image)
+        {
+            try
+            {
+                string message = this.manager.UploadImage( noteId, image);
+                if (message.Equals("ImageUploaded Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
+
         [HttpDelete]
         [Route("api/DeleteForever")]
         public IActionResult Delete([FromBody] NoteModel note)

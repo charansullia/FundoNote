@@ -1,4 +1,5 @@
 ﻿using FundooModel;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,7 @@ namespace FundooRespository.Interface
         string UnArchive(NoteModel note);
         string Trash(NoteModel note);
         string Restore(NoteModel note);
-       // string ImageUpload()
+        string UploadImage(int noteId, IFormFile image);
         string DeleteForever(NoteModel note);
     }
 }

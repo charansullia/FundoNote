@@ -1,6 +1,7 @@
 ﻿using FundooManager.Interface;
 using FundooModel;
 using FundooRespository.Interface;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -148,6 +149,17 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public string UploadImage(int noteId, IFormFile image)
+        {
+            try
+            {
+                return this.noteRepository.UploadImage( noteId, image);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         public string DeleteForever(NoteModel note)
         {
             try
@@ -159,5 +171,6 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+       
     }
 }
