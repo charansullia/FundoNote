@@ -4,6 +4,7 @@ using FundooRespository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooManager.Manager
 {
@@ -16,12 +17,12 @@ namespace FundooManager.Manager
             this.repository = repository;
         }
 
-        public string Register(RegisterModel user)
+        public async Task<string> Register(RegisterModel user)
         {
             try
             {
                 user.Password = EncodePasswordToBase64(user.Password);
-                return this.repository.Register(user);
+                return await this.repository.Register(user);
             }
             catch (Exception ex)
             {
@@ -42,11 +43,11 @@ namespace FundooManager.Manager
                 throw new Exception("error in Base64Encode" + ex.Message);
             }
         }
-        public string Login(LoginModel loginDetails)
+        public async Task<string> Login(LoginModel loginDetails)
         {
             try
             {
-                return this.repository.Login(loginDetails);
+                return await this.repository.Login(loginDetails);
             }
             catch (Exception ex)
             {
@@ -55,22 +56,22 @@ namespace FundooManager.Manager
         }
       
   
-        public string Reset(ResetModel reset)
+        public async Task<string> Reset(ResetModel reset)
         {
             try
             {
-                return this.repository.Reset(reset);
+                return await this.repository.Reset(reset);
             }
             catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string Forget(String forget)
+        public async Task<string> Forget(ForgetModel forget)
         {
             try
             {
-                return this.repository.Forget(forget);
+                return await this.repository.Forget(forget);
             }
             catch (Exception ex)
             {

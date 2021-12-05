@@ -134,7 +134,7 @@ namespace FundooRespository.Repository
                 var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (noteExist != null)
                 {
-                    if (noteExist.Pin == true)
+                    if (noteExist.Pin == false)
                     {
                         noteExist.Pin = note.Pin;
                         this.context.Note.Update(noteExist);
@@ -156,13 +156,13 @@ namespace FundooRespository.Repository
                 var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (noteExist != null)
                 {
-                    if (noteExist.Pin != false)
+                    if (noteExist.Pin == true)
                     {
                         noteExist.Pin = note.Pin;
                         this.context.Note.Update(noteExist);
                         this.context.SaveChanges();
                         return "Note UnPinned Successfully";
-                    }  
+                    }
                 }
                 return "Pin Not Removed";
             }
@@ -178,7 +178,7 @@ namespace FundooRespository.Repository
                 var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (noteExist != null)
                 {
-                    if (note.Archive == false)
+                    if (noteExist.Archive == false)
                     {
                         noteExist.Archive = note.Archive;
                         this.context.Note.Update(noteExist);
@@ -200,7 +200,7 @@ namespace FundooRespository.Repository
                 var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (noteExist != null)
                 {
-                    if (note.Archive != false)
+                    if (noteExist.Archive == true)
                     {
                         noteExist.Archive = note.Archive;
                         this.context.Note.Update(noteExist);
@@ -222,7 +222,7 @@ namespace FundooRespository.Repository
                 var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (noteExist != null)
                 {
-                    if (note.Archive == false)
+                    if (noteExist.Trash == false)
                     {
                         noteExist.Trash = note.Trash;
                         this.context.Note.Update(noteExist);
@@ -244,7 +244,7 @@ namespace FundooRespository.Repository
                 var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (noteExist != null)
                 {
-                    if (note.Archive != false)
+                    if (noteExist.Trash == true)
                     {
                         noteExist.Trash = note.Trash;
                         this.context.Note.Update(noteExist);

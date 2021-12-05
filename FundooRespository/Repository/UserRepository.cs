@@ -2,8 +2,10 @@
 using FundooModel;
 using FundooRespository.Context;
 using FundooRespository.Interface;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,16 +26,16 @@ namespace FundooRespository.Repository
             this.context = context;
             this.configuration = configuration;
         }
-        public string Register(RegisterModel user)
+        public async Task<string> Register(RegisterModel user)
         {
             try
             {
                 user.Password = EncodePasswordToBase64(user.Password);
-                var ifExist = this.context.Users.Where(x => x.Email == user.Email).SingleOrDefault();
+                var ifExist = this.context.Users.Where(x => x.Email == user.Email).SingleOrDefaultAsync();
                 if (ifExist == null)
                 {
                     this.context.Users.Add(user);
-                    this.context.SaveChanges();
+                    await this.context.SaveChangesAsync();
                     return "Register Successfull";
                 }
                     return "Email already exists";
@@ -46,28 +48,40 @@ namespace FundooRespository.Repository
             }
         }
        
-        public string Login(LoginModel loginDetails)
+        public async Task<string> Login(LoginModel loginDetails)
         {
             loginDetails.Password = EncodePasswordToBase64(loginDetails.Password);
             try
             {
-                var ifEmailExist = this.context.Users.Where(x => x.Email == loginDetails.Email && x.Password == loginDetails.Password).SingleOrDefault();
+                var ifEmailExist =await this.context.Users.Where(x => x.Email == loginDetails.Email).SingleOrDefaultAsync();
                 if (ifEmailExist != null)
                 {
-                    return "Login Successful";
-                }
+                    var ifPasswordExist = await this.context.Users.Where(x => x.Password == loginDetails.Password).SingleOrDefaultAsync();
+                    if(ifPasswordExist !=null)
+                    {
+                        ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+                        IDatabase database = connectionMultiplexer.GetDatabase();
+                        database.StringSet(key: "First Name", ifEmailExist.FirstName);
+                        database.StringSet(key: "Last Name", ifEmailExist.LastName);
+                        database.StringSet(key: "Email", ifEmailExist.Email);
+                        database.StringSet(key: "UserId", ifEmailExist.UserId.ToString());
+                        //return user != null ? "Login Successful" : "Login failed!! Email or password wrong";
+                        return "Login Successful";
+                    }
                     return "Incorrect Password";
+                }
+                    return "Email Does not exist";
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string Reset(ResetModel reset)
+        public async Task<string> Reset(ResetModel reset)
         {
             try
             {
-                var ifEmailExist = this.context.Users.Where(x => x.Email == reset.Email).SingleOrDefault();
+                var ifEmailExist =await this.context.Users.Where(x => x.Email == reset.Email).SingleOrDefaultAsync();
                 if(ifEmailExist!=null)
                 {
                     ifEmailExist.Password = EncodePasswordToBase64(reset.Password);
@@ -113,18 +127,18 @@ namespace FundooRespository.Repository
             JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
             return handler.WriteToken(token);
         }
-        public string Forget(string Email)
+        public async Task <string> Forget(ForgetModel forget)
         {
             try
             {
-                var ifEmailExist = this.context.Users.Where(x => x.Email ==Email).SingleOrDefault();
+                var ifEmailExist =await this.context.Users.Where(x => x.Email ==forget.Email).SingleOrDefaultAsync();
                 if (ifEmailExist != null)
                 {
                     MailMessage mail = new MailMessage();
                     SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
                     mail.From = new MailAddress(this.configuration["Credentials:Email"]);
-                    mail.To.Add(Email);
+                    mail.To.Add(forget.Email);
                     SendMSMQ();
                     mail.Body = RecieveMSMQ();
                     SmtpServer.Port = 587;
@@ -160,8 +174,13 @@ namespace FundooRespository.Repository
         }
         public string RecieveMSMQ()
         {
+<<<<<<< HEAD
             MessageQueue Messagequeue = new MessageQueue(@".\Private$\Fundoo");
             var recievemsg = Messagequeue.Receive();
+=======
+            MessageQueue messagequeue = new MessageQueue(@".\Private$\Fundoo");
+            var recievemsg = messagequeue.Receive();
+>>>>>>> Note
             recievemsg.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
             return recievemsg.Body.ToString();
         }
