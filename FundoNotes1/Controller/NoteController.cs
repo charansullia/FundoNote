@@ -281,7 +281,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.UploadImage( noteId, image);
-                if (message.Equals("ImageUploaded Successfully"))
+                if (message.Equals("Image Uploaded Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
