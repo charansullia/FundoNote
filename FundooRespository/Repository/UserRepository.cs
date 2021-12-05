@@ -158,10 +158,11 @@ namespace FundooRespository.Repository
         }
         public string RecieveMSMQ()
         {
-            MessageQueue messagequeue = new MessageQueue(@".\Private$\Fundo");
-            var recievemsg = messagequeue.Receive();
-           // recievemsg
-            return recievemsg.ToString();
+
+            MessageQueue Messagequeue = new MessageQueue(@".\Private$\Fundoo");
+            var recievemsg = Messagequeue.Receive();
+            recievemsg.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
+            return recievemsg.Body.ToString();
         }
 
     }
