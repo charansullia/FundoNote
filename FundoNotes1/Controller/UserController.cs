@@ -1,6 +1,7 @@
 ﻿using FundooManager.Interface;
 using FundooModel;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,11 @@ namespace FundooNotes.Contollers
 
         [HttpPost]
         [Route("api/register")]
-        public IActionResult Register([FromBody] RegisterModel user)
+        public async Task<IActionResult>Register([FromBody] RegisterModel user)
         {
             try
             {
-                string message = this.manager.Register(user);
+                string message =await this.manager.Register(user);
                 if (message.Equals("Register Successfull"))
                 {
                     return  this.Ok(new { Status = true, Message = message });
@@ -38,17 +39,31 @@ namespace FundooNotes.Contollers
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPut]
         [Route("api/Login")]
-        public IActionResult Login([FromBody] LoginModel loginDetails)
+        public async Task<IActionResult> Login([FromBody] LoginModel loginDetails)
         {
             try
             {
-                string message = this.manager.Login(loginDetails);
+                string message =await this.manager.Login(loginDetails);
                 if (message.Equals("Login Successful"))
                 {
+                    ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+                    IDatabase database = connectionMultiplexer.GetDatabase();
+                    string firstName = database.StringGet("First Name");
+                    string lastName = database.StringGet("Last Name");
+                    string email = database.StringGet("Email");
+                    int userId = Convert.ToInt32(database.StringGet("UserId"));
+
+                    RegisterModel data = new RegisterModel
+                    {
+                        FirstName = firstName,
+                        LastName = lastName,
+                        UserId = userId,
+                        Email = email
+                    };
                     string tokenString = this.manager.GenerateToken(loginDetails.Email);
-                    return this.Ok(new { Status = true, Message = message, Data = loginDetails.Email, Token = tokenString });
+                    return this.Ok(new { Status = true, Message = message, Data = data, Token = tokenString });
                 }
                 else
                 {
@@ -62,11 +77,11 @@ namespace FundooNotes.Contollers
         }
         [HttpPut]
         [Route("api/Reset")]
-        public IActionResult Reset([FromBody] ResetModel reset)
+        public async Task<IActionResult> Reset([FromBody] ResetModel reset)
         {
             try
             {
-                string message = this.manager.Reset(reset);
+                string message =await this.manager.Reset(reset);
                 if (message.Equals("Password Reset Successful"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -83,12 +98,12 @@ namespace FundooNotes.Contollers
         }
         [HttpPost]
         [Route("api/forget")]
-        public IActionResult Forget(string Email)
+        public async Task<IActionResult> Forget([FromBody] ForgetModel forget)
 
         {
             try
             {
-                string message = this.manager.Forget(Email);
+                string message = await this.manager.Forget(forget);
                 if (message.Equals("Reset Link send to Your Email"))
                 {
                     return this.Ok(new { Status = true, Message = message });
