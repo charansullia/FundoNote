@@ -361,5 +361,27 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
+        [HttpGet]
+        [Route("api/GetTrash")]
+        public IActionResult GetTrash(int UserId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> result = this.manager.GetTrash(UserId);
+                if (result != null)
+                {
+                    return this.Ok(new { Status = true, data = result, message = "Trash retrived successfully" });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, data = result, message = "Trash is Empty" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
     }
 }

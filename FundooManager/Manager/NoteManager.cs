@@ -193,6 +193,17 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public IEnumerable<NoteModel> GetTrash(int UserId)
+        {
+            try
+            {
+                return this.noteRepository.GetTrash(UserId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

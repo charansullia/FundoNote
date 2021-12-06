@@ -24,6 +24,7 @@ namespace FundooRespository.Interface
         string DeleteForever(NoteModel note);
         IEnumerable<NoteModel> GetNotes(int UserId);
         IEnumerable<NoteModel> GetArchive(int UserId);
+        IEnumerable<NoteModel> GetTrash(int UserId);
 
     }
 }
