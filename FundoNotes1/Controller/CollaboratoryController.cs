@@ -57,6 +57,28 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
+        [HttpGet]
+        [Route("api/GetCollaborator")]
+        public IActionResult GetCollaborator(int NoteId)
+        {
+            try
+            {
+                IEnumerable<CollaboratoryModel> result = this.collaboratorymanager.GetCollaborator(NoteId);
+                if (result != null)
+                {
+                    return this.Ok(new { Status = true, data = result, message = "Collaborator retrived successfully" });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, data = result, message = "Collaborator is Empty" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
 
     }
 }

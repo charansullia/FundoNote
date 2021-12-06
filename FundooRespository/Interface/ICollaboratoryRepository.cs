@@ -9,5 +9,6 @@ namespace FundooRespository.Interface
     {
         string AddCollaborator(CollaboratoryModel collaborator);
         string DeleteCollaborator(CollaboratoryModel collaborator);
+        IEnumerable<CollaboratoryModel> GetCollaborator(int UserId);
     }
 }

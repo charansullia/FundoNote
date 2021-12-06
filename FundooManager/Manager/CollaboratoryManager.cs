@@ -9,16 +9,16 @@ namespace FundooManager.Manager
 {
   public class CollaboratoryManager:ICollaboratoryManager
     {
-        private readonly ICollaboratoryRepository CollaboratoyRepository;
+        private readonly ICollaboratoryRepository CollaboratoryRepository;
         public CollaboratoryManager(ICollaboratoryRepository CollaboratoryRepository)
         {
-            this.CollaboratoyRepository = CollaboratoryRepository;
+            this.CollaboratoryRepository = CollaboratoryRepository;
         }
         public string AddCollaborator(CollaboratoryModel collaborator)
         {
             try
             {
-                return this.CollaboratoyRepository.AddCollaborator(collaborator);
+                return this.CollaboratoryRepository.AddCollaborator(collaborator);
             }
             catch (Exception ex)
             {
@@ -29,7 +29,18 @@ namespace FundooManager.Manager
         {
             try
             {
-                return this.CollaboratoyRepository.DeleteCollaborator(collaborator);
+                return this.CollaboratoryRepository.DeleteCollaborator(collaborator);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public IEnumerable<CollaboratoryModel> GetCollaborator(int NoteId)
+        {
+            try
+            {
+                return this.CollaboratoryRepository.GetCollaborator(NoteId);
             }
             catch (Exception ex)
             {

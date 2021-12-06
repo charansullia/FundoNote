@@ -49,6 +49,22 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public IEnumerable<CollaboratoryModel> GetCollaborator(int NoteId)
+        {
+            try
+            {
+                IEnumerable<CollaboratoryModel> CollaboratorList = this.context.Collaborator.Where(x => x.NoteId == NoteId).ToList();
+                if (CollaboratorList.Count() != 0)
+                {
+                    return CollaboratorList;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
    
