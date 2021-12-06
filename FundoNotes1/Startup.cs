@@ -42,6 +42,9 @@ namespace FundoNotes
             //Note
             services.AddTransient<INoteRepository, NoteRepository>();
             services.AddTransient<INoteManager, NoteManager>();
+            //Collaborator
+            services.AddTransient<ICollaboratoryRepository,CollaboratorRepository>();
+            services.AddTransient<ICollaboratoryManager, CollaboratoryManager>();
             // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSwaggerGen(c =>
             {

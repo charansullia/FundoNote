@@ -16,9 +16,10 @@ namespace FundooRespository.Repository
     {
         private readonly UserContext context;
         private readonly IConfiguration configuration;
-        public NoteRepository(UserContext context)
+        public NoteRepository(UserContext context,IConfiguration configuration)
         {
             this.context = context;
+            this.configuration = configuration;
         }
         public string AddNote(NoteModel note)
         {
