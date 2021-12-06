@@ -45,7 +45,19 @@ namespace FundoNotes
             //Collaborator
             services.AddTransient<ICollaboratoryRepository,CollaboratorRepository>();
             services.AddTransient<ICollaboratoryManager, CollaboratoryManager>();
+            //Label
+            services.AddTransient<ILabelRepository, LabelRepository>();
+            services.AddTransient<ILabelManager, LabelManager>();
             // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddSession();
+            services.AddCors(options => options.AddPolicy(name: "CorsPolicyAllHosts", builder =>
+            {
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+
+
+            }));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "FundoNotes", Description="Note For You!", Version = "1.0" });

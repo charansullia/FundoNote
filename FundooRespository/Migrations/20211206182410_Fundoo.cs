@@ -2,7 +2,7 @@
 
 namespace FundooRespository.Migrations
 {
-    public partial class Users : Migration
+    public partial class Fundoo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -69,10 +69,47 @@ namespace FundooRespository.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Label",
+                columns: table => new
+                {
+                    LabelId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(nullable: false),
+                    NoteId = table.Column<int>(nullable: true),
+                    Label = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Label", x => x.LabelId);
+                    table.ForeignKey(
+                        name: "FK_Label_Note_NoteId",
+                        column: x => x.NoteId,
+                        principalTable: "Note",
+                        principalColumn: "NoteId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Label_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Collaborator_NoteId",
                 table: "Collaborator",
                 column: "NoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Label_NoteId",
+                table: "Label",
+                column: "NoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Label_UserId",
+                table: "Label",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Note_UserId",
@@ -84,6 +121,9 @@ namespace FundooRespository.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Collaborator");
+
+            migrationBuilder.DropTable(
+                name: "Label");
 
             migrationBuilder.DropTable(
                 name: "Note");

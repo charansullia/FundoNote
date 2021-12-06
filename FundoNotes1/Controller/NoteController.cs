@@ -239,7 +239,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.Trash(note);
-                if (message.Equals("Note Trashed Successfully"))
+                if (message.Equals(true))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }

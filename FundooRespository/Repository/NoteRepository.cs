@@ -234,7 +234,7 @@ namespace FundooRespository.Repository
                         return "Note Trashed Successfully";
                     }
                 }
-                return "Note Not Trashed";
+                return "Not Trashed";
             }
             catch (ArgumentNullException ex)
             {

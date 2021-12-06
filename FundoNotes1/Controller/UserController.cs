@@ -1,6 +1,7 @@
 ﻿using FundooManager.Interface;
 using FundooModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,11 @@ namespace FundooNotes.Contollers
     public class UserController : ControllerBase
     {
         private readonly IUserManager manager;
-
-        public UserController(IUserManager manager)
+        private readonly ILogger<UserController> logger;
+        public UserController(IUserManager manager,ILogger<UserController> logger)
         {
             this.manager = manager;
+            this.logger = logger;
         }
 
         [HttpPost]
@@ -24,9 +26,11 @@ namespace FundooNotes.Contollers
         {
             try
             {
+                this.logger.LogInformation(user.FirstName + " " + user.LastName + " is trying to Register");
                 string message = this.manager.Register(user);
                 if (message.Equals("Register Successfull"))
                 {
+                    this.logger.LogInformation(user.FirstName + " " + user.LastName + message);
                     return  this.Ok(new { Status = true, Message = message });
                 }
                 else
