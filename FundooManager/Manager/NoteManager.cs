@@ -204,6 +204,17 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public IEnumerable<NoteModel> GetReminder(int UserId)
+        {
+            try
+            {
+                return this.noteRepository.GetReminder(UserId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

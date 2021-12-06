@@ -361,5 +361,22 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public IEnumerable<NoteModel> GetReminder(int UserId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> NoteList = this.context.Note.Where(x => x.UserId == UserId && x.Reminder != null).ToList();
+                if (NoteList.Count() != 0)
+                {
+                    return NoteList;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }
