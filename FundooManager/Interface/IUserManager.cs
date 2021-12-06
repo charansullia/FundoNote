@@ -8,7 +8,7 @@ namespace FundooManager.Interface
 {
    public interface IUserManager
     {
-        Task<string>Register(RegisterModel user);
+        string Register(RegisterModel user);
         Task<string> Login(LoginModel loginDetail);
         Task<string> Reset(ResetModel reset);
         Task<string> Forget(ForgetModel Email);

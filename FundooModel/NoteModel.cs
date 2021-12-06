@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace FundooModel
@@ -11,6 +12,9 @@ namespace FundooModel
         [Key]
         public int NoteId { get; set; }
         public string Title { get; set; }
+        [ForeignKey("RegisterModel")]
+        public int UserId { get; set; }
+        public virtual RegisterModel user { get; set; }
 
         //[Required]
         public string Description { get; set; }

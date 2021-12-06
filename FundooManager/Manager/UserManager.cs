@@ -17,12 +17,12 @@ namespace FundooManager.Manager
             this.repository = repository;
         }
 
-        public async Task<string> Register(RegisterModel user)
+        public string Register(RegisterModel user)
         {
             try
             {
                 user.Password = EncodePasswordToBase64(user.Password);
-                return await this.repository.Register(user);
+                return this.repository.Register(user);
             }
             catch (Exception ex)
             {

@@ -22,5 +22,6 @@ namespace FundooManager.Interface
         string Restore(NoteModel note);
         string UploadImage(int noteId, IFormFile image);
         string DeleteForever(NoteModel note);
+        IEnumerable<NoteModel> GetNotes(int UserId);
     }
 }

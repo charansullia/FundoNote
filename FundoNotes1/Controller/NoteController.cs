@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FundoNotes.Controller
 {
-   [Authorize]
+  // [Authorize]
     public class NoteController : ControllerBase
     {
         private readonly INoteManager manager;
@@ -317,6 +317,28 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
 
+        }
+        [HttpGet]
+        [Route("api/GetNotes")]
+        public IActionResult GetNotes(int UserId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> result = this.manager.GetNotes(UserId);
+                if (result != null)
+                {
+                    return this.Ok(new { Status = true, data = result, message = "Note retrived successfully" });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, data = result, message = "Note is Empty" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
         }
     }
 }

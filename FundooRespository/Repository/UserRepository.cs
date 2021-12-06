@@ -26,16 +26,16 @@ namespace FundooRespository.Repository
             this.context = context;
             this.configuration = configuration;
         }
-        public async Task<string> Register(RegisterModel user)
+        public string Register(RegisterModel user)
         {
             try
             {
                 user.Password = EncodePasswordToBase64(user.Password);
-                var ifExist = this.context.Users.Where(x => x.Email == user.Email).SingleOrDefaultAsync();
+                var ifExist = this.context.Users.Where(x => x.Email == user.Email).SingleOrDefault();
                 if (ifExist == null)
                 {
                     this.context.Users.Add(user);
-                    await this.context.SaveChangesAsync();
+                    this.context.SaveChanges();
                     return "Register Successfull";
                 }
                     return "Email already exists";
