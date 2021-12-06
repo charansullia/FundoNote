@@ -25,6 +25,17 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public string DeleteCollaborator(CollaboratoryModel collaborator)
+        {
+            try
+            {
+                return this.CollaboratoyRepository.DeleteCollaborator(collaborator);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

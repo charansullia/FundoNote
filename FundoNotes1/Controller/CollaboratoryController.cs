@@ -36,6 +36,27 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
+        [HttpDelete]
+        [Route("api/deleteCollaborator")]
+        public IActionResult DeleteCollaborator([FromBody] CollaboratoryModel collaborator)
+        {
+            try
+            {
+                string message = this.collaboratorymanager.DeleteCollaborator(collaborator);
+                if (message.Equals("Collaborator Deleted Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
 
     }
 }
