@@ -8,5 +8,6 @@ namespace FundooManager.Interface
    public interface ILabelManager
     {
         string AddLabel(LabelModel label);
+        string DeleteLabel(LabelModel label);
     }
 }

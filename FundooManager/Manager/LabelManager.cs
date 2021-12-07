@@ -25,5 +25,16 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public string DeleteLabel(LabelModel label)
+        {
+            try
+            {
+                return this.LabelRepository.DeleteLabel(label);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
