@@ -58,5 +58,27 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
+        [HttpPut]
+        [Route("api/Editlabel")]
+        public IActionResult EditLabel([FromBody] LabelModel label)
+        {
+            try
+            {
+                string message = this.labelmanager.EditLabel(label);
+                if (message.Equals("Label Edited Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
     }
 }

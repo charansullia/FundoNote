@@ -18,6 +18,7 @@ namespace FundooRespository.Repository
             this.context = context;
             this.configuration = configuration;
         }
+
         public string AddLabel(LabelModel label)
         {
             try
@@ -45,6 +46,25 @@ namespace FundooRespository.Repository
                 return "Note Not Exist";
             }
             catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string EditLabel(LabelModel label)
+        {
+            try
+            {
+                var labelExist = this.context.Label.Where(x => x.LabelId == label.LabelId).FirstOrDefault();
+                if (labelExist != null)
+                {
+                    labelExist.Label = label.Label;
+                    this.context.Label.Update(labelExist);
+                    this.context.SaveChanges();
+                    return "Label Edited Successfully";
+                }
+                return "Label not Found";
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

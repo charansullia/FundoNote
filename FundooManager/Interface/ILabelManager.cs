@@ -9,5 +9,6 @@ namespace FundooManager.Interface
     {
         string AddLabel(LabelModel label);
         string DeleteLabel(LabelModel label);
+        string EditLabel(LabelModel label);
     }
 }

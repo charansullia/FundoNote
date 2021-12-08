@@ -36,5 +36,16 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public string EditLabel(LabelModel label)
+        {
+            try
+            {
+                return this.LabelRepository.EditLabel(label);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

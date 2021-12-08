@@ -48,15 +48,15 @@ namespace FundooRespository.Repository
             }
         }
        
-        public async Task<string> Login(LoginModel loginDetails)
+        public string Login(LoginModel loginDetails)
         {
             loginDetails.Password = EncodePasswordToBase64(loginDetails.Password);
             try
             {
-                var ifEmailExist =await this.context.Users.Where(x => x.Email == loginDetails.Email).SingleOrDefaultAsync();
+                var ifEmailExist = this.context.Users.Where(x => x.Email == loginDetails.Email).SingleOrDefault();
                 if (ifEmailExist != null)
                 {
-                    var ifPasswordExist = await this.context.Users.Where(x => x.Password == loginDetails.Password).SingleOrDefaultAsync();
+                    var ifPasswordExist = this.context.Users.Where(x => x.Password == loginDetails.Password).SingleOrDefaultAsync();
                     if(ifPasswordExist !=null)
                     {
                         ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");

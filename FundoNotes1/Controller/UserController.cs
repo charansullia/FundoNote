@@ -27,7 +27,7 @@ namespace FundooNotes.Contollers
             try
             {
                 this.logger.LogInformation(user.FirstName + " " + user.LastName + " is trying to Register");
-                string message = this.manager.Register(user);
+                string message =this.manager.Register(user);
                 if (message.Equals("Register Successfull"))
                 {
                     this.logger.LogInformation(user.FirstName + " " + user.LastName + message);
@@ -45,13 +45,15 @@ namespace FundooNotes.Contollers
         }
         [HttpPut]
         [Route("api/Login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel loginDetails)
+        public IActionResult Login([FromBody] LoginModel loginDetails)
         {
             try
             {
-                string message =await this.manager.Login(loginDetails);
+                this.logger.LogInformation(loginDetails.Email + " " + loginDetails.Email + " is trying to Login");
+                string message = this.manager.Login(loginDetails);
                 if (message.Equals("Login Successful"))
                 {
+                    this.logger.LogInformation(loginDetails.Email + " " + loginDetails.Password + message);
                     ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
                     IDatabase database = connectionMultiplexer.GetDatabase();
                     string firstName = database.StringGet("First Name");

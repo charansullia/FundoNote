@@ -29,7 +29,7 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public static string EncodePasswordToBase64(string Password)
+        public string EncodePasswordToBase64(string Password)
         {
             try
             {
@@ -43,11 +43,11 @@ namespace FundooManager.Manager
                 throw new Exception("error in Base64Encode" + ex.Message);
             }
         }
-        public async Task<string> Login(LoginModel loginDetails)
+        public string Login(LoginModel loginDetails)
         {
             try
             {
-                return await this.repository.Login(loginDetails);
+                return this.repository.Login(loginDetails);
             }
             catch (Exception ex)
             {
