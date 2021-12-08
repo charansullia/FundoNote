@@ -87,5 +87,21 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public IEnumerable<LabelModel> GetLabelByNoteId(int NoteId)
+        {
+            try
+            {
+                IEnumerable<LabelModel> LabelList = this.context.Label.Where(x => x.NoteId == NoteId).ToList();
+                if (LabelList.Count() != 0)
+                {
+                    return LabelList;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

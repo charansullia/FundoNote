@@ -102,5 +102,27 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
+        [HttpPut]
+        [Route("api/GetLabelbyNoteId")]
+        public IActionResult GetLabelByNoteId(int NoteId)
+        {
+            try
+            {
+                IEnumerable<LabelModel> result = this.labelmanager.GetLabelByNoteId(NoteId);
+                if (result != null)
+                {
+                    return this.Ok(new { Status = true, Message = "Labels Present in Notes Retrieved Successfully", Data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = "Labels Not Available", Data = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+
+        }    
     }
 }

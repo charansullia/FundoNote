@@ -11,5 +11,6 @@ namespace FundooManager.Interface
         string DeleteLabel(LabelModel label);
         string EditLabel(LabelModel label);
         string RemoveLabelFromNote(int LabelId);
+        IEnumerable<LabelModel> GetLabelByNoteId(int NoteId);
     }
 }
