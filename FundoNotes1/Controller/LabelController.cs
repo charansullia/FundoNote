@@ -123,6 +123,28 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
 
-        }    
+        }
+        [HttpPut]
+        [Route("api/GetLabelbyUserId")]
+        public IActionResult GetLabelByUserId(int UserId)
+        {
+            try
+            {
+                IEnumerable<LabelModel> result = this.labelmanager.GetLabelByUserId(UserId);
+                if (result != null)
+                {
+                    return this.Ok(new { Status = true, Message = "Labels Present in Notes Retrieved Successfully", Data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = "Labels Not Available", Data = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+
+        }
     }
 }

@@ -103,5 +103,21 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public IEnumerable<LabelModel> GetLabelByUserId(int UserId)
+        {
+            try
+            {
+                IEnumerable<LabelModel> LabelList = this.context.Label.Where(x => x.UserId == UserId).ToList();
+                if (LabelList.Count() != 0)
+                {
+                    return LabelList;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

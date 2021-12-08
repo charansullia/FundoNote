@@ -70,5 +70,17 @@ namespace FundooManager.Manager
             }
 
         }
+        public IEnumerable<LabelModel> GetLabelByUserId(int UserId)
+        {
+            try
+            {
+                return this.LabelRepository.GetLabelByUserId(UserId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
     }
 }
