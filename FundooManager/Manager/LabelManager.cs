@@ -47,5 +47,16 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public string RemoveLabelFromNote(int LabelId)
+        {
+            try
+            {
+                return this.LabelRepository.RemoveLabelFromNote(LabelId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -80,5 +80,27 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
+        [HttpPut]
+        [Route("api/RemovelabelfromNote")]
+        public IActionResult RemoveLabelFromNote(int LabelId)
+        {
+            try
+            {
+                string message = this.labelmanager.RemoveLabelFromNote(LabelId);
+                if (message.Equals("Label Removed Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
+            }
+        }
     }
 }

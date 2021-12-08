@@ -69,5 +69,23 @@ namespace FundooRespository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public string RemoveLabelFromNote(int LabelId)
+        {
+            try
+            {
+                var labelExist =this.context.Label.Where(x => x.LabelId == LabelId).FirstOrDefault();
+                if (labelExist != null)
+                {
+                    labelExist.NoteId = null;
+                    this.context.SaveChanges();
+                    return "Label Removed Successfully";
+                }
+                return "Note not Found";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
