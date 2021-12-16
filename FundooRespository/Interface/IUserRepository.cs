@@ -8,10 +8,10 @@ namespace FundooRespository.Interface
 {
    public interface IUserRepository
     {
-          string Register(RegisterModel user);
-          string Login(LoginModel loginDetails);
-          Task<string> Reset(ResetModel reset);
-          Task< string> Forget(ForgetModel forget);
+          string Register(RegisterModel register);
+          string Login(LoginModel logins);
+         Task<string> Reset(ResetModel reset);
+          string Forget(ForgetModel forget);
           string GenerateToken(string Email);
 
     }

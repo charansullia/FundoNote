@@ -39,15 +39,6 @@ namespace FundoNotes
                         options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserManager, UserManager>();
-            //Note
-            services.AddTransient<INoteRepository, NoteRepository>();
-            services.AddTransient<INoteManager, NoteManager>();
-            //Collaborator
-            services.AddTransient<ICollaboratoryRepository,CollaboratorRepository>();
-            services.AddTransient<ICollaboratoryManager, CollaboratoryManager>();
-            //Label
-            services.AddTransient<ILabelRepository, LabelRepository>();
-            services.AddTransient<ILabelManager, LabelManager>();
             // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSession();
             services.AddCors(options => options.AddPolicy(name: "CorsPolicyAllHosts", builder =>
@@ -60,7 +51,7 @@ namespace FundoNotes
             }));
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "FundoNotes", Description="Note For You!", Version = "1.0" });
+                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "FundoNotes", Description = "Note For You!", Version = "1.0" });
                 // To Enable authorization using Swagger (JWT)  
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
@@ -104,9 +95,9 @@ namespace FundoNotes
                 };
             });
         }
-       
-// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-       public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

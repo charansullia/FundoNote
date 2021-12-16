@@ -4,8 +4,8 @@ using System.Text;
 
 namespace FundooModel
 {
-   public class ForgetModel
+  public class ForgetModel
     {
-        public string Email { get; set; }
+      public String Email { get; set; }
     }
 }

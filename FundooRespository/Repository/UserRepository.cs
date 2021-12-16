@@ -26,19 +26,19 @@ namespace FundooRespository.Repository
             this.context = context;
             this.configuration = configuration;
         }
-        public string Register(RegisterModel user)
+        public string Register(RegisterModel register)
         {
             try
             {
-                user.Password = EncodePasswordToBase64(user.Password);
-                var ifExist = this.context.Users.Where(x => x.Email == user.Email).SingleOrDefault();
-                if (ifExist == null)
+                register.Password = EncodePasswordToBase64(register.Password);
+                var Registration = this.context.Users.Where(x => x.FirstName == register.FirstName).SingleOrDefault();
+                if (Registration == null)
                 {
-                    this.context.Users.Add(user);
+                    this.context.Users.Add(register);
                     this.context.SaveChanges();
-                    return "Register Successfull";
+                    return "Registration Successfully";
                 }
-                    return "Email already exists";
+                    return "FirstName already exist";
                 
 
             }
@@ -48,29 +48,23 @@ namespace FundooRespository.Repository
             }
         }
        
-        public string Login(LoginModel loginDetails)
+        public string Login(LoginModel logins)
         {
-            loginDetails.Password = EncodePasswordToBase64(loginDetails.Password);
+            logins.Password = EncodePasswordToBase64(logins.Password);
             try
             {
-                var ifEmailExist = this.context.Users.Where(x => x.Email == loginDetails.Email).SingleOrDefault();
-                if (ifEmailExist != null)
+                var Email = this.context.Users.Where(x => x.Email == logins.Email).SingleOrDefault();
+                if (Email != null)
                 {
-                    var ifPasswordExist = this.context.Users.Where(x => x.Password == loginDetails.Password).SingleOrDefaultAsync();
-                    if(ifPasswordExist !=null)
+                    logins.Password = EncodePasswordToBase64(logins.Password);
+                    var Password = this.context.Users.Where(x => x.Password == logins.Password).SingleOrDefault();
+                    if(Password!=null)
                     {
-                        ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
-                        IDatabase database = connectionMultiplexer.GetDatabase();
-                        database.StringSet(key: "First Name", ifEmailExist.FirstName);
-                        database.StringSet(key: "Last Name", ifEmailExist.LastName);
-                        database.StringSet(key: "Email", ifEmailExist.Email);
-                        database.StringSet(key: "UserId", ifEmailExist.UserId.ToString());
-                        //return user != null ? "Login Successful" : "Login failed!! Email or password wrong";
-                        return "Login Successful";
+                        return "PasswordChecking Successfully";
                     }
-                    return "Incorrect Password";
+                    return "Login Successfuly";
                 }
-                    return "Email Does not exist";
+                    return "Email does not exist";
             }
             catch (ArgumentNullException ex)
             {
@@ -127,11 +121,11 @@ namespace FundooRespository.Repository
             JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
             return handler.WriteToken(token);
         }
-        public async Task <string> Forget(ForgetModel forget)
+        public string Forget(ForgetModel forget)
         {
             try
             {
-                var ifEmailExist =await this.context.Users.Where(x => x.Email ==forget.Email).SingleOrDefaultAsync();
+                var ifEmailExist = this.context.Users.Where(x => x.Email ==forget.Email).SingleOrDefault();
                 if (ifEmailExist != null)
                 {
                     MailMessage mail = new MailMessage();

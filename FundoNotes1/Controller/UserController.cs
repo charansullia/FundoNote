@@ -14,7 +14,7 @@ namespace FundooNotes.Contollers
     {
         private readonly IUserManager manager;
         private readonly ILogger<UserController> logger;
-        public UserController(IUserManager manager,ILogger<UserController> logger)
+        public UserController(IUserManager manager, ILogger<UserController> logger)
         {
             this.manager = manager;
             this.logger = logger;
@@ -22,16 +22,16 @@ namespace FundooNotes.Contollers
 
         [HttpPost]
         [Route("api/register")]
-        public IActionResult Register([FromBody] RegisterModel user)
+        public IActionResult Register([FromBody] RegisterModel register)
         {
             try
             {
-                this.logger.LogInformation(user.FirstName + " " + user.LastName + " is trying to Register");
-                string message =this.manager.Register(user);
-                if (message.Equals("Register Successfull"))
+                this.logger.LogInformation(register.FirstName + " " + register.LastName + " is trying to Register");
+                string message = this.manager.Register(register);
+                if (message.Equals("Registration Successfully"))
                 {
-                    this.logger.LogInformation(user.FirstName + " " + user.LastName + message);
-                    return  this.Ok(new { Status = true, Message = message });
+                    this.logger.LogInformation(register.FirstName + " " + register.LastName + message);
+                    return this.Ok(new { Status = true, Message = message });
                 }
                 else
                 {
@@ -45,15 +45,15 @@ namespace FundooNotes.Contollers
         }
         [HttpPut]
         [Route("api/Login")]
-        public IActionResult Login([FromBody] LoginModel loginDetails)
+        public IActionResult Login([FromBody] LoginModel logins)
         {
             try
             {
-                this.logger.LogInformation(loginDetails.Email + " " + loginDetails.Email + " is trying to Login");
-                string message = this.manager.Login(loginDetails);
+                this.logger.LogInformation(logins.Email + " " + logins.Password + " is trying to Login");
+                string message = this.manager.Login(logins);
                 if (message.Equals("Login Successful"))
                 {
-                    this.logger.LogInformation(loginDetails.Email + " " + loginDetails.Password + message);
+                    this.logger.LogInformation(logins.Email + " " + logins.Password + message);
                     ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
                     IDatabase database = connectionMultiplexer.GetDatabase();
                     string firstName = database.StringGet("First Name");
@@ -68,7 +68,7 @@ namespace FundooNotes.Contollers
                         UserId = userId,
                         Email = email
                     };
-                    string tokenString = this.manager.GenerateToken(loginDetails.Email);
+                    string tokenString = this.manager.GenerateToken(logins.Email);
                     return this.Ok(new { Status = true, Message = message, Data = data, Token = tokenString });
                 }
                 else
@@ -87,9 +87,11 @@ namespace FundooNotes.Contollers
         {
             try
             {
+                this.logger.LogInformation(reset.Email + " " + reset.Password + " is trying to Reset");
                 string message =await this.manager.Reset(reset);
                 if (message.Equals("Password Reset Successful"))
                 {
+                    this.logger.LogInformation(reset.Email + " " + reset.Password + message);
                     return this.Ok(new { Status = true, Message = message });
                 }
                 else
@@ -104,12 +106,13 @@ namespace FundooNotes.Contollers
         }
         [HttpPost]
         [Route("api/forget")]
-        public async Task<IActionResult> Forget([FromBody] ForgetModel forget)
+        public IActionResult Forget([FromBody] ForgetModel forget)
 
         {
             try
             {
-                string message = await this.manager.Forget(forget);
+                this.logger.LogInformation(forget.Email + " is trying to forget");
+                string message = this.manager.Forget(forget);
                 if (message.Equals("Reset Link send to Your Email"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -129,6 +132,3 @@ namespace FundooNotes.Contollers
 
     }
 }
-
-
-

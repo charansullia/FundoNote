@@ -17,12 +17,12 @@ namespace FundooManager.Manager
             this.repository = repository;
         }
 
-        public string Register(RegisterModel user)
+        public string Register(RegisterModel register)
         {
             try
             {
-                user.Password = EncodePasswordToBase64(user.Password);
-                return this.repository.Register(user);
+                register.Password = EncodePasswordToBase64(register.Password);
+                return this.repository.Register(register);
             }
             catch (Exception ex)
             {
@@ -67,11 +67,11 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> Forget(ForgetModel forget)
+        public string Forget(ForgetModel forget)
         {
             try
             {
-                return await this.repository.Forget(forget);
+                return this.repository.Forget(forget);
             }
             catch (Exception ex)
             {
