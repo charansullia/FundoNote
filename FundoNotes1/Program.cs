@@ -22,7 +22,7 @@ namespace FundoNotes
             {
                 logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                 logging.AddDebug();
-               // logging.AddNLog();
+                logging.AddNLog();
             })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
