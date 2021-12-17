@@ -51,7 +51,7 @@ namespace FundooNotes.Contollers
             {
                 this.logger.LogInformation(logins.Email + " " + logins.Password + " is trying to Login");
                 string message = this.manager.Login(logins);
-                if (message.Equals("Login Successful"))
+                if (message.Equals("Login Successfuly"))
                 {
                     this.logger.LogInformation(logins.Email + " " + logins.Password + message);
                     ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
