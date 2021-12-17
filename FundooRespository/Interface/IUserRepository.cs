@@ -11,11 +11,7 @@ namespace FundooRespository.Interface
           string Login(LoginModel logins);
           string Reset(ResetModel reset);
           string Forget(ForgetModel forget);
-<<<<<<< HEAD
           string TokenGeneration(string Email);
-=======
-          string GenerationofToken(string Email);
->>>>>>> a205e25dd7e512f6c693be4de064219cbb14cd9d
 
     }
 }
