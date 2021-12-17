@@ -27,46 +27,46 @@ namespace FundooRespository.Repository
             {
                 this.context.Note.Add(note);
                 this.context.SaveChanges();
-                return "Note Added Successfully";
+                return "Adding of Note Successfully";
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string Update(NoteModel note)
+        public string TitleUpdate(NoteModel note)
 
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).FirstOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).FirstOrDefault();
+                if (Note != null)
                 {
-                    noteExist.Title = note.Title;
-                    this.context.Note.Update(noteExist);
+                    Note.title = note.title;
+                    this.context.Note.Update(Note);
                     this.context.SaveChanges();
-                    return "Title Updated Successfully";
+                    return "Note Title Updated Successfully";
                 }
-                return "Title Not Updated";
+                return "Note Title not Updated";
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string UpdateDescription(NoteModel note)
+        public string DescriptionUpdate(NoteModel note)
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
                 {
-                    noteExist.Description = note.Description;
-                    this.context.Note.Update(noteExist);
+                    Note.Description = note.Description;
+                    this.context.Note.Update(Note);
                     this.context.SaveChanges();
-                    return "Description Updated Successfully";
+                    return "Note Description Sucessfully Updated";
                 }
-                return "Description Not Updated";
+                return "Note Description not updated";
             }
             catch (ArgumentNullException ex)
             {
@@ -77,15 +77,15 @@ namespace FundooRespository.Repository
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
                 {
-                    noteExist.Reminder = note.Reminder;
-                    this.context.Note.Update(noteExist);
+                    Note.Reminder = note.Reminder;
+                    this.context.Note.Update(Note);
                     this.context.SaveChanges();
-                    return "Reminder Added Successfully";
+                    return "Reminder Sucessfully Added";
                 }
-                return "Reminder Not Added";
+                return "Reminder Not Added Sucessfully";
             }
             catch (ArgumentNullException ex)
             {
@@ -102,9 +102,9 @@ namespace FundooRespository.Repository
                     noteExist.Reminder = null;
                     this.context.Note.Update(noteExist);
                     this.context.SaveChanges();
-                    return "Reminder Removed Successfully";
+                    return "Reminder Sucessfully Removed";
                 }
-                return "Reminder Not Added";
+                return "Reminder Not Removed";
             }
             catch (ArgumentNullException ex)
             {
@@ -112,19 +112,19 @@ namespace FundooRespository.Repository
             }
 
         }
-        public string UpdateColour(NoteModel note)
+        public string ColourUpdate(NoteModel note)
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
                 {
-                    noteExist.Colour = note.Colour;
-                    this.context.Note.Update(noteExist);
+                    Note.Colour = note.Colour;
+                    this.context.Note.Update(Note);
                     this.context.SaveChanges();
-                    return "Colour Updated Successfully";
+                    return "Colour Sucessfully Added";
                 }
-                return "Colour Not Updated";
+                return "Colour Not Added Sucessfully";
             }
             catch (ArgumentNullException ex)
             {
@@ -135,18 +135,18 @@ namespace FundooRespository.Repository
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
                 {
-                    if (noteExist.Pin == false)
+                    if (Note.Pin != true)
                     {
-                        noteExist.Pin = note.Pin;
-                        this.context.Note.Update(noteExist);
+                        Note.Pin = note.Pin;
+                        this.context.Note.Update(Note);
                         this.context.SaveChanges();
-                        return "Note Pinned Successfully";
+                        return "Note Successfully Pinned";
                     }
                 }
-                return "Pin Not Added";
+                return "Note pin Unsuccessfully";
             }
             catch (ArgumentNullException ex)
             {
@@ -157,15 +157,15 @@ namespace FundooRespository.Repository
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
                 {
-                    if (noteExist.Pin == true)
+                    if (Note.Pin != false)
                     {
-                        noteExist.Pin = note.Pin;
-                        this.context.Note.Update(noteExist);
+                        Note.Pin = note.Pin;
+                        this.context.Note.Update(Note);
                         this.context.SaveChanges();
-                        return "Note UnPinned Successfully";
+                        return "Note Sucessfully Unpinned";
                     }
                 }
                 return "Pin Not Removed";
@@ -179,15 +179,15 @@ namespace FundooRespository.Repository
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
                 {
-                    if (noteExist.Archive == false)
+                    if (Note.Archive != true)
                     {
-                        noteExist.Archive = note.Archive;
-                        this.context.Note.Update(noteExist);
+                        Note.Archive = note.Archive;
+                        this.context.Note.Update(Note);
                         this.context.SaveChanges();
-                        return "Note Archived";
+                        return "Note Successfully Archived";
                     }
                 }
                 return "Not Added to Archive";
@@ -201,15 +201,15 @@ namespace FundooRespository.Repository
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
                 {
-                    if (noteExist.Archive == true)
+                    if (Note.Archive != false)
                     {
-                        noteExist.Archive = note.Archive;
-                        this.context.Note.Update(noteExist);
+                        Note.Archive = note.Archive;
+                        this.context.Note.Update(Note);
                         this.context.SaveChanges();
-                        return "Un Archived";
+                        return "Note UnArchived Successfully";
                     }
                 }
                 return "Not Removed from Archive";
@@ -223,15 +223,15 @@ namespace FundooRespository.Repository
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
                 {
-                    if (noteExist.Trash == false)
+                    if (Note.Trash != true)
                     {
-                        noteExist.Trash = note.Trash;
-                        this.context.Note.Update(noteExist);
+                        Note.Trash = note.Trash;
+                        this.context.Note.Update(Note);
                         this.context.SaveChanges();
-                        return "Note Trashed Successfully";
+                        return "Note Successfully Trashed ";
                     }
                 }
                 return "Not Trashed";
@@ -245,15 +245,15 @@ namespace FundooRespository.Repository
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
                 {
-                    if (noteExist.Trash == true)
+                    if (Note.Trash != true)
                     {
-                        noteExist.Trash = note.Trash;
-                        this.context.Note.Update(noteExist);
+                        Note.Trash = note.Trash;
+                        this.context.Note.Update(Note);
                         this.context.SaveChanges();
-                        return "Note Restored Successfully";
+                        return "Note Sucessfully Restored";
                     }
                 }
                 return "Note Not Restored";
@@ -262,6 +262,30 @@ namespace FundooRespository.Repository
             {
                 throw new Exception(ex.Message);
             }
+        }
+       
+        public string DeleteForever(NoteModel note)
+        {
+            try
+            {
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
+                {
+                    if (Note.Trash != false)
+                    {
+                        this.context.Note.Remove(Note);
+                        this.context.SaveChanges();
+                        return "Note Successfully Deleted";
+                    }
+                }
+                return "Note not Deleted";
+            }
+
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
         public string UploadImage(int noteId, IFormFile image)
         {
@@ -289,29 +313,6 @@ namespace FundooRespository.Repository
             {
                 throw new Exception(ex.Message);
             }
-        }
-        public string DeleteForever(NoteModel note)
-        {
-            try
-            {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (noteExist != null)
-                {
-                    if (noteExist.Trash == true)
-                    {
-                        this.context.Note.Remove(noteExist);
-                        this.context.SaveChanges();
-                        return "Note Deleted Successfully";
-                    }
-                }
-                return "Note not Deleted";
-            }
-
-            catch (ArgumentNullException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
         }
         public IEnumerable<NoteModel> GetNotes(int UserId)
         {
