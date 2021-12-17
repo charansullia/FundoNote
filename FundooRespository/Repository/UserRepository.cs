@@ -4,6 +4,7 @@ using FundooRespository.Context;
 using FundooRespository.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -27,7 +28,7 @@ namespace FundooRespository.Repository
         {
             try
             {
-                register.Password = EncodePasswordToBase64(register.Password);
+                register.Password = EncodingPasswordToBase64(register.Password);
                 var Registration = this.context.Users.Where(x => x.FirstName == register.FirstName).SingleOrDefault();
                 if (Registration == null)
                 {
@@ -47,18 +48,26 @@ namespace FundooRespository.Repository
        
         public string Login(LoginModel logins)
         {
+            logins.Password = EncodingPasswordToBase64(logins.Password);
             try
             {
                 var Email = this.context.Users.Where(x => x.Email == logins.Email).SingleOrDefault();
                 if (Email != null)
                 {
-                    logins.Password = EncodePasswordToBase64(logins.Password);
                     var Password = this.context.Users.Where(x => x.Password == logins.Password).SingleOrDefault();
-                    if(Password!=null)
+                    if(Password !=null)
                     {
-                        return "PasswordChecking Successfully";
+                        ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+                        IDatabase database = connectionMultiplexer.GetDatabase();
+                        database.StringSet(key: "First Name",Email.FirstName);
+                        database.StringSet(key: "Last Name",Email.LastName);
+                        database.StringSet(key: "Email",Email.Email);
+                        database.StringSet(key: "UserId",Email.UserId.ToString());
+                        //return user != null ? "Login Successful" : "Login failed!! Email or password wrong";
+                        return "Login Successfully";
                     }
-                    return "Login Successfuly";
+                    return "Password doesnt exist";
+                   
                 }
                     return "Email does not exist";
             }
@@ -71,22 +80,22 @@ namespace FundooRespository.Repository
         {
             try
             {
-                var ifEmailExist = this.context.Users.Where(x => x.Email == reset.Email).SingleOrDefault();
-                if(ifEmailExist!=null)
+                var Email = this.context.Users.Where(x => x.Email == reset.Email).SingleOrDefault();
+                if(Email!=null)
                 {
-                    ifEmailExist.Password = EncodePasswordToBase64(reset.Password);
-                    this.context.Update(ifEmailExist);
+                    Email.Password = EncodingPasswordToBase64(reset.Password);
+                    this.context.Update(Email);
                     this.context.SaveChanges();
-                    return "Password Reset Successful";
+                    return "Reset of Password successfull";
                 }
-                return "Email does not exist";
+                return "Email not exist";
             }
             catch(ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public static string EncodePasswordToBase64(string Password)
+        public static string EncodingPasswordToBase64(string Password)
         {
             try
             {
@@ -100,7 +109,7 @@ namespace FundooRespository.Repository
                 throw new Exception("error in Base64Encode" + ex.Message);
             }
         }
-        public string GenerateToken(string Email)
+        public string GenerationofToken(string Email)
         {
             byte[] key = Convert.FromBase64String(this.configuration["Credentials:Secret"]);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
@@ -121,8 +130,8 @@ namespace FundooRespository.Repository
         {
             try
             {
-                var ifEmailExist = this.context.Users.Where(x => x.Email ==forget.Email).SingleOrDefault();
-                if (ifEmailExist != null)
+                var RegisteredEmail = this.context.Users.Where(x => x.Email ==forget.Email).SingleOrDefault();
+                if (RegisteredEmail != null)
                 {
                     MailMessage mail = new MailMessage();
                     SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
@@ -138,9 +147,9 @@ namespace FundooRespository.Repository
                     SmtpServer.Send(mail);
 
 
-                    return "Reset Link send to Your Email";
+                    return "Reset of PasswordLink send successfully";
                 }
-                return "Email does not exist";
+                return "Email not exist";
             }
             catch (ArgumentNullException ex)
             {
