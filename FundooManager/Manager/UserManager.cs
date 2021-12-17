@@ -21,11 +21,7 @@ namespace FundooManager.Manager
         {
             try
             {
-<<<<<<< HEAD
                 register.Password = EncodePassword(register.Password);
-=======
-                register.Password = EncodingPasswordToBase64(register.Password);
->>>>>>> a205e25dd7e512f6c693be4de064219cbb14cd9d
                 return this.repository.Register(register);
             }
             catch (Exception ex)
@@ -33,11 +29,7 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-<<<<<<< HEAD
         public static string EncodePassword(string Password)
-=======
-        public static string EncodingPasswordToBase64(string Password)
->>>>>>> a205e25dd7e512f6c693be4de064219cbb14cd9d
         {
             try
             {
@@ -64,11 +56,11 @@ namespace FundooManager.Manager
         }
       
   
-        public async Task<string> Reset(ResetModel reset)
+        public string Reset(ResetModel reset)
         {
             try
             {
-                return await this.repository.Reset(reset);
+                return this.repository.Reset(reset);
             }
             catch(Exception ex)
             {
@@ -90,11 +82,7 @@ namespace FundooManager.Manager
         {
             try
             {
-<<<<<<< HEAD
                 return this.repository.TokenGeneration(Email);
-=======
-                return this.repository.GenerationofToken(Email);
->>>>>>> a205e25dd7e512f6c693be4de064219cbb14cd9d
             }
             catch (Exception ex)
             {

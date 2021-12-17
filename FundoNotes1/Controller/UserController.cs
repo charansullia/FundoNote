@@ -83,7 +83,7 @@ namespace FundooNotes.Contollers
         }
         [HttpPut]
         [Route("api/Reset")]
-        public async Task<IActionResult> Reset([FromBody] ResetModel reset)
+        public IActionResult Reset([FromBody] ResetModel reset)
         {
             try
             {
