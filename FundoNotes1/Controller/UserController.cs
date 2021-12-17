@@ -51,7 +51,7 @@ namespace FundooNotes.Contollers
             {
                 this.logger.LogInformation(logins.Email + " " + logins.Password + " is trying to Login");
                 string message = this.manager.Login(logins);
-                if (message.Equals("Login Successful"))
+                if (message.Equals("Login Successfuly"))
                 {
                     this.logger.LogInformation(logins.Email + " " + logins.Password + message);
                     ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
@@ -68,7 +68,7 @@ namespace FundooNotes.Contollers
                         UserId = userId,
                         Email = email
                     };
-                    string tokenString = this.manager.GenerateToken(logins.Email);
+                    string tokenString = this.manager.GenerationofToken(logins.Email);
                     return this.Ok(new { Status = true, Message = message, Data = data, Token = tokenString });
                 }
                 else
@@ -88,8 +88,8 @@ namespace FundooNotes.Contollers
             try
             {
                 this.logger.LogInformation(reset.Email + " " + reset.Password + " is trying to Reset");
-                string message =await this.manager.Reset(reset);
-                if (message.Equals("Password Reset Successful"))
+                string message = this.manager.Reset(reset);
+                if (message.Equals("Reset of Password successfull"))
                 {
                     this.logger.LogInformation(reset.Email + " " + reset.Password + message);
                     return this.Ok(new { Status = true, Message = message });
@@ -111,9 +111,9 @@ namespace FundooNotes.Contollers
         {
             try
             {
-                this.logger.LogInformation(forget.Email + " is trying to forget");
+                this.logger.LogInformation(forget.Email + " is trying to forgetPassword");
                 string message = this.manager.Forget(forget);
-                if (message.Equals("Reset Link send to Your Email"))
+                if (message.Equals("Reset of PasswordLink send successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
 

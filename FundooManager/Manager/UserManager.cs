@@ -21,7 +21,11 @@ namespace FundooManager.Manager
         {
             try
             {
-                register.Password = EncodePasswordToBase64(register.Password);
+<<<<<<< HEAD
+                register.Password = EncodePassword(register.Password);
+=======
+                register.Password = EncodingPasswordToBase64(register.Password);
+>>>>>>> a205e25dd7e512f6c693be4de064219cbb14cd9d
                 return this.repository.Register(register);
             }
             catch (Exception ex)
@@ -29,7 +33,11 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public string EncodePasswordToBase64(string Password)
+<<<<<<< HEAD
+        public static string EncodePassword(string Password)
+=======
+        public static string EncodingPasswordToBase64(string Password)
+>>>>>>> a205e25dd7e512f6c693be4de064219cbb14cd9d
         {
             try
             {
@@ -43,11 +51,11 @@ namespace FundooManager.Manager
                 throw new Exception("error in Base64Encode" + ex.Message);
             }
         }
-        public string Login(LoginModel loginDetails)
+        public string Login(LoginModel logins)
         {
             try
             {
-                return this.repository.Login(loginDetails);
+                return this.repository.Login(logins);
             }
             catch (Exception ex)
             {
@@ -78,11 +86,15 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public string GenerateToken(string Email)
+        public string GenerationofToken(string Email)
         {
             try
             {
-                return this.repository.GenerateToken(Email);
+<<<<<<< HEAD
+                return this.repository.TokenGeneration(Email);
+=======
+                return this.repository.GenerationofToken(Email);
+>>>>>>> a205e25dd7e512f6c693be4de064219cbb14cd9d
             }
             catch (Exception ex)
             {
