@@ -8,11 +8,11 @@ namespace FundooRespository.Interface
    public interface INoteRepository
     {
         string AddNote(NoteModel note);
-        string Update(NoteModel note);
-        string UpdateDescription(NoteModel note);
+        string TitleUpdate(NoteModel note);
+        string DescriptionUpdate(NoteModel note);
         string AddReminder(NoteModel note);
         string RemoveReminder(NoteModel note);
-        string UpdateColour(NoteModel note);
+        string ColourUpdate(NoteModel note);
         string PinNote(NoteModel note);
         string UnPinNote(NoteModel note);
         string Archive(NoteModel note);

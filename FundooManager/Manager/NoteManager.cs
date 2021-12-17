@@ -26,22 +26,22 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public string Update(NoteModel note)
+        public string TitleUpdate(NoteModel note)
         {
             try
             {
-                return this.noteRepository.Update(note);
+                return this.noteRepository.TitleUpdate(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string UpdateDescription(NoteModel note)
+        public string DescriptionUpdate(NoteModel note)
         {
             try
             {
-                return this.noteRepository.UpdateDescription(note);
+                return this.noteRepository.DescriptionUpdate(note);
             }
             catch (Exception ex)
             {
@@ -70,11 +70,11 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public string UpdateColour(NoteModel note)
+        public string ColourUpdate(NoteModel note)
         {
             try
             {
-                return this.noteRepository.UpdateColour(note);
+                return this.noteRepository.ColourUpdate(note);
             }
             catch (Exception ex)
             {

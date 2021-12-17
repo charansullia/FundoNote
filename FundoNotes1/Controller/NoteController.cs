@@ -22,7 +22,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.AddNote(note);
-                if (message.Equals("Note Added Successfully"))
+                if (message.Equals("Adding of Note Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -38,12 +38,12 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/UpdateTitle")]
-        public IActionResult UpdateTitle([FromBody] NoteModel note)
+        public IActionResult TitleUpdate([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.Update(note);
-                if (message.Equals("Title Updated Successfully"))
+                string message = this.manager.TitleUpdate(note);
+                if (message.Equals("Note Title Updated Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -59,12 +59,12 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/UpdateDescription")]
-        public IActionResult UpdateDescription([FromBody] NoteModel note)
+        public IActionResult DescriptionUpdate([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.UpdateDescription(note);
-                if (message.Equals("Description Updated Successfully"))
+                string message = this.manager.DescriptionUpdate(note);
+                if (message.Equals("Note Description Sucessfully Updated"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -85,7 +85,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.AddReminder(note);
-                if (message.Equals("Reminder Added Successfully"))
+                if (message.Equals("Reminder Sucessfully Added"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -106,7 +106,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.RemoveReminder(noteModel);
-                if (message.Equals("Reminder Removed Successfully"))
+                if (message.Equals("Reminder Sucessfully Removed"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -123,12 +123,12 @@ namespace FundoNotes.Controller
 
         [HttpPut]
         [Route("api/UpdateColour")]
-        public IActionResult UpdateColour([FromBody] NoteModel note)
+        public IActionResult ColourUpdate([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.UpdateColour(note);
-                if (message.Equals("Colour Updated Successfully"))
+                string message = this.manager.ColourUpdate(note);
+                if (message.Equals("Colour Sucessfully Added"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -149,7 +149,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.PinNote(note);
-                if (message.Equals("Note Pinned Successfully"))
+                if (message.Equals("Note Successfully Pinned"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -170,7 +170,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.UnPinNote(note);
-                if (message.Equals("Note UnPinned Successfully"))
+                if (message.Equals("Note Sucessfully Unpinned"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -192,7 +192,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.Archive(note);
-                if (message.Equals("Note Archived"))
+                if (message.Equals("Note Successfully Archived"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -213,7 +213,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.UnArchive(note);
-                if (message.Equals("Un Archived"))
+                if (message.Equals("Note UnArchived Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -236,7 +236,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.Trash(note);
-                if (message.Equals("Note Trashed Successfully"))
+                if (message.Equals("Note Successfully Trashed"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -257,7 +257,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.Restore(note);
-                if (message.Equals("Note Restored Successfully"))
+                if (message.Equals("Note Sucessfully Restored"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -278,7 +278,7 @@ namespace FundoNotes.Controller
             try
             {
                 string message = this.manager.DeleteForever(note);
-                if (message.Equals("Note Deleted Successfully"))
+                if (message.Equals("Note Successfully Deleted"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }

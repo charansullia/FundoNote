@@ -10,7 +10,7 @@ namespace FundooModel
     {
         [Key]
         public int NoteId { get; set; }
-        public string Title { get; set; }
+        public string title { get; set; }
 
         //[Required]
         public string Description { get; set; }
