@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooRespository.Repository
 {
@@ -24,21 +25,19 @@ namespace FundooRespository.Repository
             this.context = context;
             this.configuration = configuration;
         }
-        public string Register(RegisterModel register)
+        public async Task<string> Register(RegisterModel register)
         {
             try
             {
-                register.Password = EncodePassword(register.Password);
-                var Registration = this.context.Users.Where(x => x.Email == register.Email).SingleOrDefault();
+                var Registration = this.context.Users.Where(x => x.Email == register.Email).FirstOrDefault();
                 if (Registration == null)
                 {
+                    register.Password = EncodePassword(register.Password);
                     this.context.Users.Add(register);
-                    this.context.SaveChanges();
+                    await this.context.SaveChangesAsync();
                     return "Registration Successfully";
                 }
                     return "Email already exist";
-                
-
             }
             catch (ArgumentNullException ex)
             {
@@ -48,12 +47,12 @@ namespace FundooRespository.Repository
        
         public string Login(LoginModel logins)
         {
-                logins.Password = EncodePassword(logins.Password);
                 try
                 {
                     var Email = this.context.Users.Where(x => x.Email == logins.Email).SingleOrDefault();
                     if (Email != null)
                     {
+                        logins.Password = EncodePassword(logins.Password);
                         var Password = this.context.Users.Where(x => x.Password == logins.Password).SingleOrDefault();
                         if (Password != null)
                         {
@@ -76,7 +75,7 @@ namespace FundooRespository.Repository
 
                 }
             }
-        public string Reset(ResetModel reset)
+        public async Task<string> ResetPassword(ResetModel reset)
         {
             try
             {
@@ -85,7 +84,7 @@ namespace FundooRespository.Repository
                 {
                     Email.Password = EncodePassword(reset.Password);
                     this.context.Update(Email);
-                    this.context.SaveChanges();
+                    await this.context.SaveChangesAsync();
                     return "Reset of Password successfull";
                 }
                 return "Email not exist";
@@ -111,7 +110,7 @@ namespace FundooRespository.Repository
         }
         public string TokenGeneration(string Email)
         {
-            byte[] key = Convert.FromBase64String(this.configuration["Credentials:Secret"]);
+            byte[] key = Convert.FromBase64String(this.configuration["Credentials:SecretKey"]);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
@@ -126,11 +125,11 @@ namespace FundooRespository.Repository
             JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
             return handler.WriteToken(token);
         }
-        public string Forget(ForgetModel forget)
+        public string ForgotPassword(ForgetModel forget)
         {
             try
             {
-                var RegisteredEmail = this.context.Users.Where(x => x.Email ==forget.Email).SingleOrDefault();
+                var RegisteredEmail = this.context.Users.Where(x => x.Email ==forget.Email).FirstOrDefault();
                 if (RegisteredEmail != null)
                 {
                     MailMessage mail = new MailMessage();
