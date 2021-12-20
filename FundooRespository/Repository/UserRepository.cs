@@ -29,14 +29,14 @@ namespace FundooRespository.Repository
             try
             {
                 register.Password = EncodePassword(register.Password);
-                var Registration = this.context.Users.Where(x => x.FirstName == register.FirstName).SingleOrDefault();
+                var Registration = this.context.Users.Where(x => x.Email == register.Email).SingleOrDefault();
                 if (Registration == null)
                 {
                     this.context.Users.Add(register);
                     this.context.SaveChanges();
                     return "Registration Successfully";
                 }
-                    return "FirstName already exist";
+                    return "Email already exist";
                 
 
             }
