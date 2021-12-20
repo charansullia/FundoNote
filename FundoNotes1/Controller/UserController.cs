@@ -22,25 +22,25 @@ namespace FundooNotes.Contollers
 
         [HttpPost]
         [Route("api/register")]
-        public IActionResult Register([FromBody] RegisterModel register)
+        public async Task<IActionResult> Register([FromBody] RegisterModel register)
         {
             try
             {
                 this.logger.LogInformation(register.FirstName + " " + register.LastName + " is trying to Register");
-                string message = this.manager.Register(register);
+                string message =await this.manager.Register(register);
                 if (message.Equals("Registration Successfully"))
                 {
                     this.logger.LogInformation(register.FirstName + " " + register.LastName + message);
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = message });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
         [HttpPut]
@@ -56,77 +56,78 @@ namespace FundooNotes.Contollers
                     this.logger.LogInformation(logins.Email + " " + logins.Password + message);
                     ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
                     IDatabase database = connectionMultiplexer.GetDatabase();
-                    string firstName = database.StringGet("First Name");
-                    string lastName = database.StringGet("Last Name");
-                    string email = database.StringGet("Email");
-                    int userId = Convert.ToInt32(database.StringGet("UserId"));
+                    string FirstName = database.StringGet("First Name");
+                    string LastName = database.StringGet("Last Name");
+                    string Email = database.StringGet("Email");
+                    int UserId = Convert.ToInt32(database.StringGet("UserId"));
 
                     RegisterModel data = new RegisterModel
                     {
-                        FirstName = firstName,
-                        LastName = lastName,
-                        UserId = userId,
-                        Email = email
+                        FirstName = FirstName,
+                        LastName = LastName,
+                        UserId = UserId,
+                        Email = Email
                     };
-                    string tokenString = this.manager.GenerationofToken(logins.Email);
+                    string tokenString = this.manager.TokenGeneration(logins.Email);
                     return this.Ok(new { Status = true, Message = message, Data = data, Token = tokenString });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
         [HttpPut]
         [Route("api/Reset")]
-        public IActionResult Reset([FromBody] ResetModel reset)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetModel reset)
         {
             try
             {
                 this.logger.LogInformation(reset.Email + " " + reset.Password + " is trying to Reset");
-                string message = this.manager.Reset(reset);
+                string message =await this.manager.ResetPassword(reset);
                 if (message.Equals("Reset of Password successfull"))
                 {
                     this.logger.LogInformation(reset.Email + " " + reset.Password + message);
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = message });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
         [HttpPost]
-        [Route("api/forget")]
+        [Route("api/forgetPassword")]
         public IActionResult Forget([FromBody] ForgetModel forget)
 
         {
             try
             {
                 this.logger.LogInformation(forget.Email + " is trying to forgetPassword");
-                string message = this.manager.Forget(forget);
+                string message = this.manager.ForgotPassword(forget);
                 if (message.Equals("Reset of PasswordLink send successfully"))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    this.logger.LogInformation(forget.Email + " " + message);
+                    return this.Ok(new ResponseModel<bool>() { Status = true, Message = message });
 
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<bool>() { Status = false, Message = message });
                 }
 
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new ResponseModel<bool>() { Status = false, Message = ex.Message });
             }
         }
 
