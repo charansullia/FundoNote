@@ -144,8 +144,6 @@ namespace FundooRespository.Repository
                     SmtpServer.Credentials = new System.Net.NetworkCredential(this.configuration["Credentials:Email"], this.configuration["Credentials:Password"]);
                     SmtpServer.EnableSsl = true;
                     SmtpServer.Send(mail);
-
-
                     return true;
                 }
                 return false;
@@ -173,7 +171,6 @@ namespace FundooRespository.Repository
         }
         public string RecieveMSMQ()
         {
-
             MessageQueue Messagequeue = new MessageQueue(@".\Private$\Fundoo");
             var recievemsg = Messagequeue.Receive();
             recievemsg.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
