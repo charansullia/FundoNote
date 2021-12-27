@@ -27,15 +27,15 @@ namespace FundooNotes.Contollers
             try
             {
                 this.logger.LogInformation(register.FirstName + " " + register.LastName + " is trying to Register");
-                string message =await this.manager.Register(register);
-                if (message.Equals("Registration Successfully"))
+                bool message =await this.manager.Register(register);
+                if (message==true)
                 {
                     this.logger.LogInformation(register.FirstName + " " + register.LastName + message);
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "RegistrationSuccessfull" });
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message ="RegistrationUnSuccessful" });
                 }
             }
             catch (Exception ex)
@@ -50,8 +50,8 @@ namespace FundooNotes.Contollers
             try
             {
                 this.logger.LogInformation(logins.Email + " " + logins.Password + " is trying to Login");
-                string message = this.manager.Login(logins);
-                if (message.Equals("Login Successfuly"))
+                bool message = this.manager.Login(logins);
+                if (message==true)
                 {
                     this.logger.LogInformation(logins.Email + " " + logins.Password + message);
                     ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
@@ -69,11 +69,11 @@ namespace FundooNotes.Contollers
                         Email = Email
                     };
                     string tokenString = this.manager.TokenGeneration(logins.Email);
-                    return this.Ok(new { Status = true, Message = message, Data = data, Token = tokenString });
+                    return this.Ok(new { Status = true, Message = "LoginSucessfull", Data = data, Token = tokenString });
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message ="LoginUnSuccessful" });
                 }
             }
             catch (Exception ex)
@@ -88,15 +88,15 @@ namespace FundooNotes.Contollers
             try
             {
                 this.logger.LogInformation(reset.Email + " " + reset.Password + " is trying to Reset");
-                string message =await this.manager.ResetPassword(reset);
-                if (message.Equals("Reset of Password successfull"))
+                bool message =await this.manager.ResetPassword(reset);
+                if (message.Equals(true))
                 {
                     this.logger.LogInformation(reset.Email + " " + reset.Password + message);
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Password Reset Successfull" });
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Password Reset Unsucessfull" });
                 }
             }
             catch (Exception ex)
@@ -112,16 +112,16 @@ namespace FundooNotes.Contollers
             try
             {
                 this.logger.LogInformation(forget.Email + " is trying to forgetPassword");
-                string message = this.manager.ForgotPassword(forget);
-                if (message.Equals("Reset of PasswordLink send successfully"))
+                bool message = this.manager.ForgotPassword(forget);
+                if (message.Equals(true))
                 {
                     this.logger.LogInformation(forget.Email + " " + message);
-                    return this.Ok(new ResponseModel<bool>() { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = " Password Link Send Sucessfully" });
 
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<bool>() { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<bool>() { Status = false, Message = "Password Link send Unsuccessfully " });
                 }
 
             }

@@ -17,7 +17,7 @@ namespace FundooManager.Manager
             this.repository = repository;
         }
 
-        public async Task<string> Register(RegisterModel register)
+        public async Task<bool> Register(RegisterModel register)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace FundooManager.Manager
                 throw new Exception("error in Base64Encode" + ex.Message);
             }
         }
-        public string Login(LoginModel logins)
+        public bool Login(LoginModel logins)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace FundooManager.Manager
         }
       
   
-        public async Task<string> ResetPassword(ResetModel reset)
+        public async Task<bool> ResetPassword(ResetModel reset)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public string ForgotPassword(ForgetModel forget)
+        public bool ForgotPassword(ForgetModel forget)
         {
             try
             {

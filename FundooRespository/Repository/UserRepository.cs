@@ -26,19 +26,19 @@ namespace FundooRespository.Repository
             this.context = context;
             this.configuration = configuration;
         }
-        public async Task<string> Register(RegisterModel register)
+        public async Task<bool> Register(RegisterModel register)
         {
             try
             {
-                var Registration = this.context.Users.Where(x => x.Email == register.Email).FirstOrDefault();
+                var Registration = this.context.Users.Where(x => x.Email == register.Email).SingleOrDefault();
                 if (Registration == null)
                 {
                     register.Password = EncodePassword(register.Password);
                     this.context.Users.Add(register);
                     await this.context.SaveChangesAsync();
-                    return "Registration Successfully";
+                    return true;
                 }
-                    return "Email already exist";
+                    return false;
             }
             catch (ArgumentNullException ex)
             {
@@ -46,15 +46,15 @@ namespace FundooRespository.Repository
             }
         }
        
-        public string Login(LoginModel logins)
+        public bool Login(LoginModel logins)
         {
                 try
                 {
-                    var Email = this.context.Users.Where(x => x.Email == logins.Email).SingleOrDefault();
+                    var Email = this.context.Users.Where(x => x.Email == logins.Email).FirstOrDefault();
                     if (Email != null)
                     {
                         logins.Password = EncodePassword(logins.Password);
-                        var Password = this.context.Users.Where(x => x.Password == logins.Password).SingleOrDefault();
+                        var Password = this.context.Users.Where(x => x.Password == logins.Password).FirstOrDefault();
                         if (Password != null)
                         {
                             ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
@@ -64,11 +64,11 @@ namespace FundooRespository.Repository
                             database.StringSet(key: "Email", Email.Email);
                             database.StringSet(key: "UserId", Email.UserId.ToString());
                             //return user != null ? "Login Successful" : "Login failed!! Email or password wrong";
-                            return "Login Successfuly";
+                            return true;
                         }
-                        return "Incorrect Password";
+                        return false;
                     }
-                    return "Email Does not exist";
+                    return false;
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -76,19 +76,19 @@ namespace FundooRespository.Repository
 
                 }
             }
-        public async Task<string> ResetPassword(ResetModel reset)
+        public async Task<bool> ResetPassword(ResetModel reset)
         {
             try
             {
                 var Email = this.context.Users.Where(x => x.Email == reset.Email).SingleOrDefault();
-                if(Email!=null)
+                if(Email != null)
                 {
                     Email.Password = EncodePassword(reset.Password);
                     this.context.Update(Email);
                     await this.context.SaveChangesAsync();
-                    return "Reset of Password successfull";
+                    return true;
                 }
-                return "Email not exist";
+                return false;
             }
             catch(ArgumentNullException ex)
             {
@@ -111,7 +111,7 @@ namespace FundooRespository.Repository
         }
         public string TokenGeneration(string Email)
         {
-            byte[] key = Encoding.UTF8.GetBytes(this.configuration["Secret"]);
+            byte[] key = Convert.FromBase64String(this.configuration["SecretKey"]);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
@@ -126,11 +126,11 @@ namespace FundooRespository.Repository
             JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
             return handler.WriteToken(token);
         }
-        public string ForgotPassword(ForgetModel forget)
+        public bool ForgotPassword(ForgetModel forget)
         {
             try
             {
-                var RegisteredEmail = this.context.Users.Where(x => x.Email ==forget.Email).FirstOrDefault();
+                var RegisteredEmail = this.context.Users.Where(x => x.Email ==forget.Email).SingleOrDefault();
                 if (RegisteredEmail != null)
                 {
                     MailMessage mail = new MailMessage();
@@ -146,9 +146,9 @@ namespace FundooRespository.Repository
                     SmtpServer.Send(mail);
 
 
-                    return "Reset of PasswordLink send successfully";
+                    return true;
                 }
-                return "Email not exist";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
