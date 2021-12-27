@@ -111,11 +111,7 @@ namespace FundooRespository.Repository
         }
         public string TokenGeneration(string Email)
         {
-<<<<<<< HEAD
             byte[] key = Encoding.UTF8.GetBytes(this.configuration["Secret"]);
-=======
-            byte[] key = Convert.FromBase64String(this.configuration["Credentials:SecretKey"]);
->>>>>>> User
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
