@@ -317,20 +317,20 @@ namespace FundoNotes.Controller
             }
         }
         [HttpGet]
-        [Route("api/GetNotes")]
-        public IActionResult GetNotes(int UserId)
-        {
-            try
+            [Route("api/GetNotes")]
+            public IActionResult GetNotes(int UserId)
             {
-                IEnumerable<NoteModel> result = this.manager.GetNotes(UserId);
-                if (result != null)
+                try
                 {
-                    return this.Ok(new { Status = true, data = result, message = "Note retrived successfully" });
-                }
-                else
-                {
-                    return this.BadRequest(new { Status = false, data = result, message = "Note is Empty" });
-                }
+                    IEnumerable<NoteModel> result = this.manager.GetNotes(UserId);
+                    if (result != null)
+                    {
+                        return this.Ok(new { Status = true, data = result, message = "Note retrived successfully" });
+                    }
+                    else
+                    {
+                        return this.BadRequest(new { Status = false, data = result, message = "Note is Empty" });
+                    }
 
             }
             catch (Exception ex)
