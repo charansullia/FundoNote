@@ -26,77 +26,76 @@ namespace FundooRespository.Repository
             this.context = context;
             this.configuration = configuration;
         }
-        public async Task<string> Register(RegisterModel user)
+        public async Task<bool> Register(RegisterModel register)
         {
             try
             {
-                user.Password = EncodePasswordToBase64(user.Password);
-                var ifExist = this.context.Users.Where(x => x.Email == user.Email).SingleOrDefaultAsync();
-                if (ifExist == null)
+                var Registration = this.context.Users.Where(x => x.Email == register.Email).SingleOrDefault();
+                if (Registration == null)
                 {
-                    this.context.Users.Add(user);
+                    register.Password = EncodePassword(register.Password);
+                    this.context.Users.Add(register);
                     await this.context.SaveChangesAsync();
-                    return "Register Successfull";
+                    return true;
                 }
-                    return "Email already exists";
-                
-
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-       
-        public async Task<string> Login(LoginModel loginDetails)
+
+        public bool Login(LoginModel logins)
         {
-            loginDetails.Password = EncodePasswordToBase64(loginDetails.Password);
             try
             {
-                var ifEmailExist =await this.context.Users.Where(x => x.Email == loginDetails.Email).SingleOrDefaultAsync();
-                if (ifEmailExist != null)
+                var Email = this.context.Users.Where(x => x.Email == logins.Email).SingleOrDefault();
+                if (Email != null)
                 {
-                    var ifPasswordExist = await this.context.Users.Where(x => x.Password == loginDetails.Password).SingleOrDefaultAsync();
-                    if(ifPasswordExist !=null)
+                    logins.Password = EncodePassword(logins.Password);
+                    var Password = this.context.Users.Where(x => x.Password == logins.Password).SingleOrDefault();
+                    if (Password != null)
                     {
                         ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
                         IDatabase database = connectionMultiplexer.GetDatabase();
-                        database.StringSet(key: "First Name", ifEmailExist.FirstName);
-                        database.StringSet(key: "Last Name", ifEmailExist.LastName);
-                        database.StringSet(key: "Email", ifEmailExist.Email);
-                        database.StringSet(key: "UserId", ifEmailExist.UserId.ToString());
+                        database.StringSet(key: "First Name", Email.FirstName);
+                        database.StringSet(key: "Last Name", Email.LastName);
+                        database.StringSet(key: "Email", Email.Email);
+                        database.StringSet(key: "UserId", Email.UserId.ToString());
                         //return user != null ? "Login Successful" : "Login failed!! Email or password wrong";
-                        return "Login Successful";
+                        return true;
                     }
-                    return "Incorrect Password";
+                    return false;
                 }
-                    return "Email Does not exist";
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+        }
+        public async Task<bool> ResetPassword(ResetModel reset)
+        {
+            try
+            {
+                var Email = this.context.Users.Where(x => x.Email == reset.Email).SingleOrDefault();
+                if (Email != null)
+                {
+                    Email.Password = EncodePassword(reset.Password);
+                    this.context.Update(Email);
+                    await this.context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> Reset(ResetModel reset)
-        {
-            try
-            {
-                var ifEmailExist =await this.context.Users.Where(x => x.Email == reset.Email).SingleOrDefaultAsync();
-                if(ifEmailExist!=null)
-                {
-                    ifEmailExist.Password = EncodePasswordToBase64(reset.Password);
-                    this.context.Update(ifEmailExist);
-                    this.context.SaveChanges();
-                    return "Password Reset Successful";
-                }
-                return "Email does not exist";
-            }
-            catch(ArgumentNullException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-        public static string EncodePasswordToBase64(string Password)
+        public static string EncodePassword(string Password)
         {
             try
             {
@@ -110,9 +109,9 @@ namespace FundooRespository.Repository
                 throw new Exception("error in Base64Encode" + ex.Message);
             }
         }
-        public string GenerateToken(string Email)
+        public string TokenGeneration(string Email)
         {
-            byte[] key = Encoding.UTF8.GetBytes(this.configuration["Credentials:Secret"]);
+            byte[] key = Convert.FromBase64String(this.configuration["SecretKey"]);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
@@ -127,12 +126,12 @@ namespace FundooRespository.Repository
             JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
             return handler.WriteToken(token);
         }
-        public async Task <string> Forget(ForgetModel forget)
+        public bool ForgotPassword(ForgetModel forget)
         {
             try
             {
-                var ifEmailExist =await this.context.Users.Where(x => x.Email ==forget.Email).SingleOrDefaultAsync();
-                if (ifEmailExist != null)
+                var RegisteredEmail = this.context.Users.Where(x => x.Email == forget.Email).SingleOrDefault();
+                if (RegisteredEmail != null)
                 {
                     MailMessage mail = new MailMessage();
                     SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
@@ -146,11 +145,9 @@ namespace FundooRespository.Repository
                     SmtpServer.Credentials = new System.Net.NetworkCredential(this.configuration["Credentials:Email"], this.configuration["Credentials:Password"]);
                     SmtpServer.EnableSsl = true;
                     SmtpServer.Send(mail);
-
-
-                    return "Reset Link send to Your Email";
+                    return true;
                 }
-                return "Email does not exist";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
@@ -168,17 +165,16 @@ namespace FundooRespository.Repository
             {
                 msgqueue = MessageQueue.Create(@".\Private$\Fundoo");
             }
-            msgqueue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
-            string body = "This is Password reset link.ResetLink=>";
+            string body = "This is Password reset link.";
             msgqueue.Label = "Mail Body";
             msgqueue.Send(body);
         }
         public string RecieveMSMQ()
         {
-            MessageQueue messagequeue = new MessageQueue(@".\Private$\Fundoo");
-            var recievemsg = messagequeue.Receive();
+            MessageQueue Messagequeue = new MessageQueue(@".\Private$\Fundoo");
+            var recievemsg = Messagequeue.Receive();
             recievemsg.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
-            return recievemsg.ToString();
+            return recievemsg.Body.ToString();
         }
 
     }

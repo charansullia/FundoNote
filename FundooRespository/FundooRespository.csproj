@@ -6,22 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20211202150014_Note.cs" />
-    <Compile Remove="Migrations\20211202150014_Note.Designer.cs" />
-    <Compile Remove="Migrations\20211202150127_Note.cs" />
-    <Compile Remove="Migrations\20211202150127_Note.Designer.cs" />
-    <Compile Remove="Migrations\20211202150240_Notes.cs" />
-    <Compile Remove="Migrations\20211202150240_Notes.Designer.cs" />
-    <Compile Remove="Migrations\20211202150534_Note.cs" />
-    <Compile Remove="Migrations\20211202150534_Note.Designer.cs" />
-    <Compile Remove="Migrations\20211202151529_Note.cs" />
-    <Compile Remove="Migrations\20211202151529_Note.Designer.cs" />
-    <Compile Remove="Migrations\20211202152254_Note.cs" />
-    <Compile Remove="Migrations\20211202152254_Note.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.15.2" />
     <PackageReference Include="Experimental.System.Messaging" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>

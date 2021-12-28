@@ -29,7 +29,6 @@ namespace FundoNotes
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -39,13 +38,17 @@ namespace FundoNotes
                         options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserManager, UserManager>();
-            //Note
-            services.AddTransient<INoteRepository, NoteRepository>();
-            services.AddTransient<INoteManager, NoteManager>();
             // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddSession();
+            services.AddCors(options => options.AddPolicy(name: "CorsPolicyAllHosts", builder =>
+            {
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+            }));
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "FundoNotes", Description="Note For You!", Version = "1.0" });
+                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "FundoNotes", Description = "Note For You!", Version = "1.0" });
                 // To Enable authorization using Swagger (JWT)  
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
@@ -68,7 +71,6 @@ namespace FundoNotes
                                 }
                             },
                             new string[] {}
-
                     }
                 });
             });
@@ -85,15 +87,13 @@ namespace FundoNotes
                     ValidateAudience = false,
                     ValidateLifetime = false,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = Configuration["Jwt:Issuer"],
-                    ValidAudience = Configuration["Jwt:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])) //Configuration["JwtToken:SecretKey"]  
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Secret"])) //Configuration["JwtToken:SecretKey"]  
                 };
             });
         }
-       
-// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-       public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -110,6 +110,9 @@ namespace FundoNotes
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -125,3 +128,4 @@ namespace FundoNotes
         }
     }
 }
+

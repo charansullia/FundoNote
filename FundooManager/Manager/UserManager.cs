@@ -17,19 +17,19 @@ namespace FundooManager.Manager
             this.repository = repository;
         }
 
-        public async Task<string> Register(RegisterModel user)
+        public async Task<bool> Register(RegisterModel register)
         {
             try
             {
-                user.Password = EncodePasswordToBase64(user.Password);
-                return await this.repository.Register(user);
+                register.Password = EncodePassword(register.Password);
+                return await this.repository.Register(register);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public static string EncodePasswordToBase64(string Password)
+        public static string EncodePassword(string Password)
         {
             try
             {
@@ -43,46 +43,44 @@ namespace FundooManager.Manager
                 throw new Exception("error in Base64Encode" + ex.Message);
             }
         }
-        public async Task<string> Login(LoginModel loginDetails)
+        public bool Login(LoginModel logins)
         {
             try
             {
-                return await this.repository.Login(loginDetails);
+                return this.repository.Login(logins);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-      
-  
-        public async Task<string> Reset(ResetModel reset)
+        public async Task<bool> ResetPassword(ResetModel reset)
         {
             try
             {
-                return await this.repository.Reset(reset);
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-        public async Task<string> Forget(ForgetModel forget)
-        {
-            try
-            {
-                return await this.repository.Forget(forget);
+                return await this.repository.ResetPassword(reset);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string GenerateToken(string Email)
+        public bool ForgotPassword(ForgetModel forget)
         {
             try
             {
-                return this.repository.GenerateToken(Email);
+                return this.repository.ForgotPassword(forget);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string TokenGeneration(string Email)
+        {
+            try
+            {
+                return this.repository.TokenGeneration(Email);
             }
             catch (Exception ex)
             {

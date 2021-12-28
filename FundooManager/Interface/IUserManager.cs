@@ -8,11 +8,11 @@ namespace FundooManager.Interface
 {
    public interface IUserManager
     {
-        Task<string>Register(RegisterModel user);
-        Task<string> Login(LoginModel loginDetail);
-        Task<string> Reset(ResetModel reset);
-        Task<string> Forget(ForgetModel Email);
-        string GenerateToken(string Email);
+        Task<bool> Register(RegisterModel register);
+        bool Login(LoginModel logins);
+        Task<bool> ResetPassword(ResetModel reset);
+        bool ForgotPassword(ForgetModel forget);
+        string TokenGeneration(string Email);
 
     }
 }

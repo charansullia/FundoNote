@@ -1,9 +1,11 @@
 ﻿using FundooManager.Interface;
 using FundooModel;
 using FundooRespository.Interface;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooManager.Manager
 {
@@ -15,88 +17,88 @@ namespace FundooManager.Manager
             this.noteRepository = noteRepository;
         }
 
-        public string AddNote(NoteModel note)
+        public async Task<bool> AddNote(NoteModel note)
         {
             try
             {
-                return this.noteRepository.AddNote(note);
+                return await this.noteRepository.AddNote(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string TitleUpdate(NoteModel note)
+        public async Task<bool>TitleUpdate(NoteModel note)
         {
             try
             {
-                return this.noteRepository.TitleUpdate(note);
+                return await this.noteRepository.TitleUpdate(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string DescriptionUpdate(NoteModel note)
+        public async Task<bool> DescriptionUpdate(NoteModel note)
         {
             try
             {
-                return this.noteRepository.DescriptionUpdate(note);
+                return await this.noteRepository.DescriptionUpdate(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string AddReminder(NoteModel note)
+        public async Task<bool> AddReminder(NoteModel note)
         {
             try
             {
-                return this.noteRepository.AddReminder(note);
+                return await this.noteRepository.AddReminder(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string RemoveReminder(NoteModel note)
+        public async Task<bool> RemoveReminder(NoteModel note)
         {
             try
             {
-                return this.noteRepository.RemoveReminder(note);
+                return await this.noteRepository.RemoveReminder(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string ColourUpdate(NoteModel note)
+        public async Task<bool> ColourUpdate(NoteModel note)
         {
             try
             {
-                return this.noteRepository.ColourUpdate(note);
+                return await this.noteRepository.ColourUpdate(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string PinNote(NoteModel note)
+        public async Task<bool> PinNote(NoteModel note)
         {
             try
             {
-                return this.noteRepository.PinNote(note);
+                return await this.noteRepository.PinNote(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string UnPinNote(NoteModel note)
+        public async Task<bool> UnPinNote(NoteModel note)
         {
             try
             {
-                return this.noteRepository.UnPinNote(note);
+                return await this.noteRepository.UnPinNote(note);
             }
             catch (Exception ex)
             {
@@ -104,60 +106,116 @@ namespace FundooManager.Manager
             }
         }
 
-        public string Archive(NoteModel note)
+        public async Task<bool> Archive(NoteModel note)
         {
             try
             {
-                return this.noteRepository.Archive(note);
+                return await this.noteRepository.Archive(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string UnArchive(NoteModel note)
+        public async Task<bool> UnArchive(NoteModel note)
         {
             try
             {
-                return this.noteRepository.UnArchive(note);
+                return await this.noteRepository.UnArchive(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string Trash(NoteModel note)
+        public  async Task<bool> Trash(NoteModel note)
         {
             try
             {
-                return this.noteRepository.Trash(note);
+                return await this.noteRepository.Trash(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string Restore(NoteModel note)
+        public async Task<bool> Restore(NoteModel note)
         {
             try
             {
-                return this.noteRepository.Restore(note);
+                return await this.noteRepository.Restore(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string DeleteForever(NoteModel note)
+        public async Task<bool> DeleteForever(NoteModel note)
         {
             try
             {
-                return this.noteRepository.DeleteForever(note);
+                return await this.noteRepository.DeleteForever(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+        public string UploadImage(int noteId, IFormFile image)
+        {
+            try
+            {
+                return this.noteRepository.UploadImage(noteId, image);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public IEnumerable<NoteModel> GetNotes(int UserId)
+        {
+            try
+            {
+                return this.noteRepository.GetNotes(UserId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public IEnumerable<NoteModel> GetArchive(int UserId)
+        {
+            try
+            {
+                return this.noteRepository.GetArchive(UserId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public IEnumerable<NoteModel> GetTrash(int UserId)
+        {
+            try
+            {
+                return this.noteRepository.GetTrash(UserId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public IEnumerable<NoteModel> GetReminder(int UserId)
+        {
+            try
+            {
+                return this.noteRepository.GetReminder(UserId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }
