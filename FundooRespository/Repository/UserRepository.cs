@@ -38,50 +38,50 @@ namespace FundooRespository.Repository
                     await this.context.SaveChangesAsync();
                     return true;
                 }
-                    return false;
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-       
+
         public bool Login(LoginModel logins)
         {
-                try
+            try
+            {
+                var Email = this.context.Users.Where(x => x.Email == logins.Email).SingleOrDefault();
+                if (Email != null)
                 {
-                    var Email = this.context.Users.Where(x => x.Email == logins.Email).FirstOrDefault();
-                    if (Email != null)
+                    logins.Password = EncodePassword(logins.Password);
+                    var Password = this.context.Users.Where(x => x.Password == logins.Password).SingleOrDefault();
+                    if (Password != null)
                     {
-                        logins.Password = EncodePassword(logins.Password);
-                        var Password = this.context.Users.Where(x => x.Password == logins.Password).FirstOrDefault();
-                        if (Password != null)
-                        {
-                            ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
-                            IDatabase database = connectionMultiplexer.GetDatabase();
-                            database.StringSet(key: "First Name", Email.FirstName);
-                            database.StringSet(key: "Last Name", Email.LastName);
-                            database.StringSet(key: "Email", Email.Email);
-                            database.StringSet(key: "UserId", Email.UserId.ToString());
-                            //return user != null ? "Login Successful" : "Login failed!! Email or password wrong";
-                            return true;
-                        }
-                        return false;
+                        ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+                        IDatabase database = connectionMultiplexer.GetDatabase();
+                        database.StringSet(key: "First Name", Email.FirstName);
+                        database.StringSet(key: "Last Name", Email.LastName);
+                        database.StringSet(key: "Email", Email.Email);
+                        database.StringSet(key: "UserId", Email.UserId.ToString());
+                        //return user != null ? "Login Successful" : "Login failed!! Email or password wrong";
+                        return true;
                     }
                     return false;
                 }
-                catch (ArgumentNullException ex)
-                {
-                    throw new Exception(ex.Message);
-
-                }
+                return false;
             }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+        }
         public async Task<bool> ResetPassword(ResetModel reset)
         {
             try
             {
                 var Email = this.context.Users.Where(x => x.Email == reset.Email).SingleOrDefault();
-                if(Email != null)
+                if (Email != null)
                 {
                     Email.Password = EncodePassword(reset.Password);
                     this.context.Update(Email);
@@ -90,7 +90,7 @@ namespace FundooRespository.Repository
                 }
                 return false;
             }
-            catch(ArgumentNullException ex)
+            catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -130,7 +130,7 @@ namespace FundooRespository.Repository
         {
             try
             {
-                var RegisteredEmail = this.context.Users.Where(x => x.Email ==forget.Email).SingleOrDefault();
+                var RegisteredEmail = this.context.Users.Where(x => x.Email == forget.Email).SingleOrDefault();
                 if (RegisteredEmail != null)
                 {
                     MailMessage mail = new MailMessage();
@@ -164,8 +164,7 @@ namespace FundooRespository.Repository
             {
                 msgqueue = MessageQueue.Create(@".\Private$\Fundoo");
             }
-            msgqueue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
-            string body = "This is Password reset link.ResetLink=>";
+            string body = "This is Password reset link.";
             msgqueue.Label = "Mail Body";
             msgqueue.Send(body);
         }

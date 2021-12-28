@@ -8,6 +8,6 @@ namespace FundooModel
   public class ForgetModel
     {
         [Required]
-      public String Email { get; set; }
+        public string Email { get; set; }
     }
 }

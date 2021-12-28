@@ -34,3 +34,4 @@ namespace FundooModel
         public bool Trash { get; set; }
     }
 }
+

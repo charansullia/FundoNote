@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooRespository.Repository
 {
@@ -16,45 +17,45 @@ namespace FundooRespository.Repository
     {
         private readonly UserContext context;
         private readonly IConfiguration configuration;
-        public NoteRepository(UserContext context,IConfiguration configuration)
+        public NoteRepository(UserContext context, IConfiguration configuration)
         {
             this.context = context;
             this.configuration = configuration;
         }
-        public string AddNote(NoteModel note)
+        public async Task<bool> AddNote(NoteModel note)
         {
             try
             {
                 this.context.Note.Add(note);
-                this.context.SaveChanges();
-                return "Adding of Note Successfully";
+                await this.context.SaveChangesAsync();
+                return true;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string TitleUpdate(NoteModel note)
+        public async Task<bool> TitleUpdate(NoteModel note)
 
         {
             try
             {
-                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).FirstOrDefault();
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (Note != null)
                 {
                     Note.title = note.title;
                     this.context.Note.Update(Note);
-                    this.context.SaveChanges();
-                    return "Note Title Updated Successfully";
+                    await this.context.SaveChangesAsync();
+                    return true;
                 }
-                return "Note Title not Updated";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string DescriptionUpdate(NoteModel note)
+        public async Task<bool>DescriptionUpdate(NoteModel note)
         {
             try
             {
@@ -63,17 +64,17 @@ namespace FundooRespository.Repository
                 {
                     Note.Description = note.Description;
                     this.context.Note.Update(Note);
-                    this.context.SaveChanges();
-                    return "Note Description Sucessfully Updated";
+                    await this.context.SaveChangesAsync();
+                    return true;
                 }
-                return "Note Description not updated";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string AddReminder(NoteModel note)
+        public async Task<bool> AddReminder(NoteModel note)
         {
             try
             {
@@ -82,29 +83,29 @@ namespace FundooRespository.Repository
                 {
                     Note.Reminder = note.Reminder;
                     this.context.Note.Update(Note);
-                    this.context.SaveChanges();
-                    return "Reminder Sucessfully Added";
+                    await this.context.SaveChangesAsync();
+                    return true;
                 }
-                return "Reminder Not Added Sucessfully";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string RemoveReminder(NoteModel note)
+        public async Task<bool>RemoveReminder(NoteModel note)
         {
             try
             {
-                var noteExist = this.context.Note.Where(x => x.NoteId == note.NoteId).FirstOrDefault();
-                if (noteExist != null)
+                var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (Note != null)
                 {
-                    noteExist.Reminder = null;
-                    this.context.Note.Update(noteExist);
-                    this.context.SaveChanges();
-                    return "Reminder Sucessfully Removed";
+                     Note.Reminder = null;
+                    this.context.Note.Update(Note);
+                    await this.context.SaveChangesAsync();
+                    return true;
                 }
-                return "Reminder Not Removed";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
@@ -112,7 +113,7 @@ namespace FundooRespository.Repository
             }
 
         }
-        public string ColourUpdate(NoteModel note)
+        public async Task<bool> ColourUpdate(NoteModel note)
         {
             try
             {
@@ -121,17 +122,17 @@ namespace FundooRespository.Repository
                 {
                     Note.Colour = note.Colour;
                     this.context.Note.Update(Note);
-                    this.context.SaveChanges();
-                    return "Colour Sucessfully Added";
+                    await this.context.SaveChangesAsync();
+                    return true;
                 }
-                return "Colour Not Added Sucessfully";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string PinNote(NoteModel note)
+        public async Task<bool> PinNote(NoteModel note)
         {
             try
             {
@@ -142,18 +143,18 @@ namespace FundooRespository.Repository
                     {
                         Note.Pin = note.Pin;
                         this.context.Note.Update(Note);
-                        this.context.SaveChanges();
-                        return "Note Successfully Pinned";
+                        await this.context.SaveChangesAsync();
+                        return true;
                     }
                 }
-                return "Note pin Unsuccessfully";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string UnPinNote(NoteModel note)
+        public async Task<bool> UnPinNote(NoteModel note)
         {
             try
             {
@@ -164,18 +165,18 @@ namespace FundooRespository.Repository
                     {
                         Note.Pin = note.Pin;
                         this.context.Note.Update(Note);
-                        this.context.SaveChanges();
-                        return "Note Sucessfully Unpinned";
+                        await this.context.SaveChangesAsync();
+                        return true;
                     }
                 }
-                return "Pin Not Removed";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string Archive(NoteModel note)
+        public async Task<bool> Archive(NoteModel note)
         {
             try
             {
@@ -186,18 +187,18 @@ namespace FundooRespository.Repository
                     {
                         Note.Archive = note.Archive;
                         this.context.Note.Update(Note);
-                        this.context.SaveChanges();
-                        return "Note Successfully Archived";
+                        await this.context.SaveChangesAsync();
+                        return true;
                     }
                 }
-                return "Not Added to Archive";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string UnArchive(NoteModel note)
+        public async Task<bool> UnArchive(NoteModel note)
         {
             try
             {
@@ -208,18 +209,18 @@ namespace FundooRespository.Repository
                     {
                         Note.Archive = note.Archive;
                         this.context.Note.Update(Note);
-                        this.context.SaveChanges();
-                        return "Note UnArchived Successfully";
+                        await this.context.SaveChangesAsync();
+                        return true;
                     }
                 }
-                return "Not Removed from Archive";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string Trash(NoteModel note)
+        public async Task<bool> Trash(NoteModel note)
         {
             try
             {
@@ -230,41 +231,41 @@ namespace FundooRespository.Repository
                     {
                         Note.Trash = note.Trash;
                         this.context.Note.Update(Note);
-                        this.context.SaveChanges();
-                        return "Note Successfully Trashed ";
+                        await this.context.SaveChangesAsync();
+                        return true;
                     }
                 }
-                return "Not Trashed";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string Restore(NoteModel note)
+        public async Task<bool> Restore(NoteModel note)
         {
             try
             {
                 var Note = this.context.Note.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
                 if (Note != null)
                 {
-                    if (Note.Trash != true)
+                    if (Note.Trash != false)
                     {
                         Note.Trash = note.Trash;
                         this.context.Note.Update(Note);
-                        this.context.SaveChanges();
-                        return "Note Sucessfully Restored";
+                       await this.context.SaveChangesAsync();
+                        return true;
                     }
                 }
-                return "Note Not Restored";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-       
-        public string DeleteForever(NoteModel note)
+
+        public async Task<bool> DeleteForever(NoteModel note)
         {
             try
             {
@@ -274,11 +275,11 @@ namespace FundooRespository.Repository
                     if (Note.Trash != false)
                     {
                         this.context.Note.Remove(Note);
-                        this.context.SaveChanges();
-                        return "Note Successfully Deleted";
+                        await this.context.SaveChangesAsync();
+                        return true;
                     }
                 }
-                return "Note not Deleted";
+                return false;
             }
 
             catch (ArgumentNullException ex)

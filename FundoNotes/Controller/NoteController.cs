@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FundoNotes.Controller
 {
-  // [Authorize]
+    [Authorize]
     public class NoteController : ControllerBase
     {
         private readonly INoteManager manager;
@@ -20,18 +20,18 @@ namespace FundoNotes.Controller
         }
         [HttpPost]
         [Route("api/addnote")]
-        public IActionResult AddNote([FromBody] NoteModel note)
+        public async Task<IActionResult> AddNote([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.AddNote(note);
-                if (message.Equals("Adding of Note Successfully"))
+                bool message = await this.manager.AddNote(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Note Added Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Note Added UnSucessfully" });
                 }
             }
             catch (Exception ex)
@@ -41,18 +41,18 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/UpdateTitle")]
-        public IActionResult TitleUpdate([FromBody] NoteModel note)
+        public async Task<IActionResult> TitleUpdate([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.TitleUpdate(note);
-                if (message.Equals("Note Title Updated Successfully"))
+                bool message = await this.manager.TitleUpdate(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "TitleUpdate Successfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "TitleUpateUnsuccessfully", Data = "Session Data" });
                 }
             }
             catch (Exception ex)
@@ -62,18 +62,18 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/UpdateDescription")]
-        public IActionResult DescriptionUpdate([FromBody] NoteModel note)
+        public async Task<IActionResult> DescriptionUpdate([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.DescriptionUpdate(note);
-                if (message.Equals("Note Description Sucessfully Updated"))
+                bool message = await this.manager.DescriptionUpdate(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Description Updated Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Description Updated UnSucessfully" });
                 }
             }
             catch (Exception ex)
@@ -83,18 +83,18 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/AddReminder")]
-        public IActionResult AddReminder([FromBody] NoteModel note)
+        public async Task<IActionResult> AddReminder([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.AddReminder(note);
-                if (message.Equals("Reminder Sucessfully Added"))
+                bool message = await this.manager.AddReminder(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Reminder Added Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Reminder Added UnSucessfully" });
                 }
             }
             catch (Exception ex)
@@ -104,18 +104,18 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/RemoveReminder")]
-        public IActionResult RemoveReminder([FromBody] NoteModel noteModel)
+        public async Task<IActionResult> RemoveReminder([FromBody] NoteModel noteModel)
         {
             try
             {
-                string message = this.manager.RemoveReminder(noteModel);
-                if (message.Equals("Reminder Sucessfully Removed"))
+                bool message = await this.manager.RemoveReminder(noteModel);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Reminder Removed Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Reminder Removed UnSucessfully" });
                 }
             }
             catch (Exception ex)
@@ -126,18 +126,18 @@ namespace FundoNotes.Controller
 
         [HttpPut]
         [Route("api/UpdateColour")]
-        public IActionResult ColourUpdate([FromBody] NoteModel note)
+        public async Task<IActionResult> ColourUpdate([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.ColourUpdate(note);
-                if (message.Equals("Colour Sucessfully Added"))
+                bool message = await this.manager.ColourUpdate(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Colour Updated Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Colour Updated UnSucessfully" });
                 }
             }
             catch (Exception ex)
@@ -147,18 +147,18 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/PinNote")]
-        public IActionResult PinNote([FromBody] NoteModel note)
+        public async Task<IActionResult> PinNote([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.PinNote(note);
-                if (message.Equals("Note Successfully Pinned"))
+                bool message = await this.manager.PinNote(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Note Pinned Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = false, Message = "Note Pinned UnSucessfully" });
                 }
             }
             catch (Exception ex)
@@ -168,18 +168,18 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/UnPinNote")]
-        public IActionResult UnPinNote([FromBody] NoteModel note)
+        public async Task<IActionResult> UnPinNote([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.UnPinNote(note);
-                if (message.Equals("Note Sucessfully Unpinned"))
+                bool message = await this.manager.UnPinNote(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Note UnPinned Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Not UnPinned UnSucessfully" });
                 }
             }
             catch (Exception ex)
@@ -190,18 +190,18 @@ namespace FundoNotes.Controller
 
         [HttpPut]
         [Route("api/Archive")]
-        public IActionResult UpdateArchive([FromBody] NoteModel note)
+        public async Task<IActionResult> Archive([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.Archive(note);
-                if (message.Equals("Note Successfully Archived"))
+                bool message = await this.manager.Archive(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Note Archived Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Note Archived UnSucessfully" });
                 }
             }
             catch (Exception ex)
@@ -211,18 +211,18 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/UnArchive")]
-        public IActionResult UnArchive([FromBody] NoteModel note)
+        public async Task<IActionResult> UnArchive([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.UnArchive(note);
-                if (message.Equals("Note UnArchived Successfully"))
+                bool message = await this.manager.UnArchive(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Note UnArchived Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Note UnArchived Sucessfully" });
                 }
             }
             catch (Exception ex)
@@ -234,18 +234,18 @@ namespace FundoNotes.Controller
 
         [HttpPut]
         [Route("api/Trash")]
-        public IActionResult UpdateTrash([FromBody] NoteModel note)
+        public async Task<IActionResult> Trash([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.Trash(note);
-                if (message.Equals("Note Successfully Trashed"))
+                bool message = await this.manager.Trash(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Note Trashed Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Note Trashed UnSucessfully" });
                 }
             }
             catch (Exception ex)
@@ -255,18 +255,18 @@ namespace FundoNotes.Controller
         }
         [HttpPut]
         [Route("api/Restore")]
-        public IActionResult Restore([FromBody] NoteModel note)
+        public async Task<IActionResult> Restore([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.Restore(note);
-                if (message.Equals("Note Sucessfully Restored"))
+                bool message = await this.manager.Restore(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Note Restored Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Note Restored UnSucessfully" });
                 }
             }
             catch (Exception ex)
@@ -274,49 +274,26 @@ namespace FundoNotes.Controller
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
-        [HttpPut]
-        [Route("api/UploadImage")]
-        public IActionResult UploadImage(int noteId, IFormFile image)
-        {
-            try
-            {
-                string message = this.manager.UploadImage( noteId, image);
-                if (message.Equals("Image Uploaded Successfully"))
-                {
-                    return this.Ok(new { Status = true, Message = message });
-                }
-                else
-                {
-                    return this.BadRequest(new { Status = false, Message = message });
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.NotFound(new { Status = false, ex.Message });
-            }
-        }
-
         [HttpDelete]
         [Route("api/DeleteForever")]
-        public IActionResult Delete([FromBody] NoteModel note)
+        public async Task<IActionResult> Delete([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.DeleteForever(note);
-                if (message.Equals("Note Successfully Deleted"))
+                bool message = await this.manager.DeleteForever(note);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Note Deleted Sucessfully", Data = "Session Data" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Note Deleted UnSucessfully" });
                 }
             }
             catch (Exception ex)
             {
                 return this.NotFound(new { Status = false, ex.Message });
             }
-
         }
         [HttpGet]
         [Route("api/GetNotes")]

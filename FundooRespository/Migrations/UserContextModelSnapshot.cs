@@ -89,14 +89,14 @@ namespace FundooRespository.Migrations
                     b.Property<string>("Reminder")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("Trash")
                         .HasColumnType("bit");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("title")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("NoteId");
 
@@ -113,6 +113,7 @@ namespace FundooRespository.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -128,28 +129,6 @@ namespace FundooRespository.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("FundooModel.CollaboratoryModel", b =>
-                {
-                    b.HasOne("FundooModel.NoteModel", "note")
-                        .WithMany()
-                        .HasForeignKey("NoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FundooModel.LabelModel", b =>
-                {
-                    b.HasOne("FundooModel.NoteModel", "note")
-                        .WithMany()
-                        .HasForeignKey("NoteId");
-
-                    b.HasOne("FundooModel.RegisterModel", "user")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("FundooModel.NoteModel", b =>

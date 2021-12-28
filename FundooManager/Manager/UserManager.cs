@@ -15,6 +15,7 @@ namespace FundooManager.Manager
         {
             this.repository = repository;
         }
+
         public async Task<bool> Register(RegisterModel register)
         {
             try
@@ -58,7 +59,7 @@ namespace FundooManager.Manager
             {
                 return await this.repository.ResetPassword(reset);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

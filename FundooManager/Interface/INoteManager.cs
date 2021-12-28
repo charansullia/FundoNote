@@ -3,28 +3,30 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooManager.Interface
 {
   public interface INoteManager
     {
-        string AddNote(NoteModel note);
-        string TitleUpdate(NoteModel note);
-        string DescriptionUpdate(NoteModel note);
-        string AddReminder(NoteModel note);
-        string RemoveReminder(NoteModel note);
-        string ColourUpdate(NoteModel note);
-        string PinNote(NoteModel note);
-        string UnPinNote(NoteModel note);
-        string Archive(NoteModel note);
-        string UnArchive(NoteModel note);
-        string Trash(NoteModel note);
-        string Restore(NoteModel note);
+        Task<bool> AddNote(NoteModel note);
+        Task<bool> TitleUpdate(NoteModel note);
+        Task<bool> DescriptionUpdate(NoteModel note);
+        Task<bool> AddReminder(NoteModel note);
+        Task<bool> RemoveReminder(NoteModel note);
+        Task<bool> ColourUpdate(NoteModel note);
+        Task<bool> PinNote(NoteModel note);
+        Task<bool> UnPinNote(NoteModel note);
+        Task<bool>Archive(NoteModel note);
+        Task<bool> UnArchive(NoteModel note);
+        Task<bool> Trash(NoteModel note);
+        Task<bool> Restore(NoteModel note);
+        Task<bool> DeleteForever(NoteModel note);
         string UploadImage(int noteId, IFormFile image);
-        string DeleteForever(NoteModel note);
         IEnumerable<NoteModel> GetNotes(int UserId);
         IEnumerable<NoteModel> GetArchive(int UserId);
         IEnumerable<NoteModel> GetTrash(int UserId);
         IEnumerable<NoteModel> GetReminder(int UserId);
+
     }
 }

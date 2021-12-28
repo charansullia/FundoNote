@@ -8,11 +8,11 @@ namespace FundooRespository.Interface
 {
    public interface IUserRepository
     {
-          Task<bool> Register(RegisterModel register);
-          bool Login (LoginModel logins);
-          Task<bool> ResetPassword(ResetModel reset);
-          bool ForgotPassword(ForgetModel forget);
-          string TokenGeneration(string Email);
+        Task<bool> Register(RegisterModel register);
+        bool Login(LoginModel logins);
+        Task<bool> ResetPassword(ResetModel reset);
+        bool ForgotPassword(ForgetModel forget);
+        string TokenGeneration(string Email);
 
     }
 }
